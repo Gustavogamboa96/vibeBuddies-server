@@ -27,7 +27,7 @@ function dataValidation(req, res, next) {
     // block trims data, updates whichs fields need to changed
     Object.entries(bodyData).forEach(([key, value]) => {
         // checking if the key provided is a key that is allowed to change
-        if (validFields.has(key)) {
+        if (validFields.has(key) && typeof value === "string") {
             dataToUpdate[key] = value.trim();
             validFields.delete(key);
         }
