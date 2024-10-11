@@ -67,6 +67,8 @@ async function retrieveAllFriendsByStatus(userId, status) {
 async function findFriendRequest(userId, targetUserId, status = "pending") {
     /**
      * DAO layer function to retrieve all friends by the provided status
+     * 
+     * because the main functionality is to be able to send a friend request the status is by default pending
      */
     try {
         const params = {
@@ -96,7 +98,7 @@ async function acceptFriendRequest(userId, targetUserId) {
     /**
      * DAO layer function to update a friend request from pending to accepted
      * 
-     * 
+     * function makes conneciton betwene two users and sets their friendStatus to accepted
      */
 
     try {
@@ -126,6 +128,7 @@ async function deleteFriend(userId, targetUserId) {
     /**
      * DAO layer to delete a friend request or friend from database
      * 
+     * finds connection between two users and deletes it in the database
      */
 
     try {
@@ -142,14 +145,5 @@ async function deleteFriend(userId, targetUserId) {
         throw new Error(error.message)
     }
 }
-// accepting friend
-// getting friend List
-// deleting (deny, delete friend) friend
-// handle deleting friends if they delete their account
-
-// query by your id
-// list of all the targetUserId
-// filter by block first
-// filter friendstatus = [pending, accepted, ]
 
 module.exports = { sendFriendReuest, retrieveAllFriendsByStatus, findFriendRequest, acceptFriendRequest, deleteFriend };
