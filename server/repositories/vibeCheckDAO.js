@@ -6,6 +6,9 @@ const {
     DeleteCommand,
     ScanCommand,
     QueryCommand } = require("@aws-sdk/lib-dynamodb");
+QueryCommand,
+    BatchWriteCommand} = require("@aws-sdk/lib-dynamodb");
+const chunkArray = require("../utils/splitDataInChunks");
 
 const TableName = "vibe_checks_table";
 
@@ -199,6 +202,58 @@ async function getItemById(vibe_check_id) {
         throw err;
     }
 }
+async function getItemsByUserId(user_id) {
+    const command = new QueryCommand({
+        TableName,
+        IndexName: "user_id_index",
+        KeyConditionExpression: "user_id = :user_id", // Query based on user_id
+        ExpressionAttributeValues: {
+            ":user_id": user_id,           // Replace with the user_id value
+        },
+    });
+    try {
+        const data = await documentClient.send(command);
+        return data;
+    } catch (error) {
+        console.error("Error getting all items for user from DynamoDB:", error);
+    }
+}
+
+async function batchDeleteVibeChecks(vibe_checks_to_delete) {
+    const MAX_BATCH_SIZE = 25;
+
+    const itemChunks = chunkArray(vibe_checks_to_delete, MAX_BATCH_SIZE);
+
+    // Process each chunk of 25 items
+    for (const chunk of itemChunks) {
+        const deleteRequests = chunk.map(item => ({
+            DeleteRequest: {
+                Key: {
+                    'vibe_check_id': item.vibe_check_id, // Replace with the actual partition key
+                }
+            }
+        }));
+
+        const command = new BatchWriteCommand({
+            RequestItems: {
+                TableName: deleteRequests // Replace with your table name
+            }
+        });
+
+        try {
+            const data = await documentClient.send(command);
+            console.log('Batch delete successful:', result);
+            return data;
+        } catch (error) {
+            console.error('Error performing batch delete:', error);
+        }
+    }
+}
+
+
+
+
+
 
 module.exports = {
     getItemById,
@@ -210,5 +265,7 @@ module.exports = {
     addItemLikedBy,
     removeItemLikedBy,
     addItemDislikedBy,
-    removeItemDislikedBy
+    removeItemDislikedBy,
+    getItemsByUserId,
+    batchDeleteVibeChecks
 };
