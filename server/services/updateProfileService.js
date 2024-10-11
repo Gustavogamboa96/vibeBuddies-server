@@ -4,7 +4,11 @@ const userDAO = require("../repositories/userDAO");
 
 async function updateProfile(reqUsername, dataToUpdate, dataToDelete) {
     /**
-     * service layer function to handle the 
+     * service layer function to handle the updating of a user profile
+     * 
+     * reqUsername - username of object we will be modifying
+     * dataToUpdate - passed by middleware
+     * dataToDelete - passed by middleware
      */
     try {
 

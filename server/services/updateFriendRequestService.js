@@ -10,6 +10,9 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
      * ex. username1 is friends with username2 ANNNND username2 is friends with username1
      * 
      * if denied, then friend request should be deleted from the database
+     * 
+     * userId, username - grabbed from auth middleware
+     * targetUsername, status - grabbed from the body of the request
      */
     try {
         const data = {};

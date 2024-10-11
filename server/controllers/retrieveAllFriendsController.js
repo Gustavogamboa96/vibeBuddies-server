@@ -10,6 +10,7 @@ async function retrieveAllFriends(req, res) {
      */
     try {
 
+        // destructuring required params
         const { status = "accepted" } = req.query;
         const { userId } = req.params;
 

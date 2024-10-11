@@ -11,20 +11,19 @@ const { retrieveAllFriends } = require("../controllers/retrieveAllFriendsControl
 // middleware
 const { dataValidation } = require("../middleware/updateProfileDataValidation");
 const authenticateToken = require("../middleware/authenticateToken");
-const { validateUser } = require("../middleware/validateUserOwnershipById");
 
 
 // route to update profile, expects body with info, protected route
-router.patch("/:userId", authenticateToken, validateUser, dataValidation, updateProfile);
+router.patch("", authenticateToken, dataValidation, updateProfile);
 // route to delete user, expects the userId as a route param
-router.delete("/:userId", authenticateToken, validateUser, deleteAccount);
+router.delete("", authenticateToken, deleteAccount);
 // route to send a friend request, expects username of person in the body
-router.post("/:userId/friends", authenticateToken, validateUser, sendFriendRequest);
+router.post("/friends", authenticateToken, sendFriendRequest);
 // route to handle the accepting/denying friend request, expects either accept/deny in the body
-router.patch("/:userId/friends", authenticateToken, validateUser, updateFriendRequest);
+router.patch("/friends", authenticateToken, updateFriendRequest);
 // route to handle filtering for friends by either accepted/pending, should contain a query param (status)
 // by default its accepted
-router.get("/:userId/friends", authenticateToken, validateUser, retrieveAllFriends)
+router.get("/friends", authenticateToken, retrieveAllFriends)
 
 
 

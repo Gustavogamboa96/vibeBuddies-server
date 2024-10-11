@@ -1,13 +1,12 @@
 const { errorResponse } = require("../utils/errorResponse");
-const { friendRequestUpdate } = require("../services/friendRequstUpdateService")
+const { friendRequestUpdate } = require("../services/updateFriendRequestService")
 
 async function updateFriendRequest(req, res) {
     /**
      * controller layer function to handle the accepting/denying of a friend request
-     * 
-     * status - will be validated in middleware/service layer function
      */
     try {
+        // destructuring required params
         const { user_id: userId, username } = req.user;
         const { status, targetUsername } = req.body;
 

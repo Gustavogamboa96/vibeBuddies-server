@@ -1,16 +1,20 @@
-const { deleteUserById } = require("../repositories/userDAO");
+const userDAO = require("../repositories/userDAO");
 const { dataResponse } = require("../utils/dataResponse");
 
-async function deleteUser(username) {
+async function deleteUser(username, userId) {
     /**
-     * service layer function to hamdle the deletion of a user based on their id
+     * service layer function to handle the deletion of a user based on their id
+     * 
+     * username - grabbed from the auth middleware
+     * userId - grabbed from the auth middleware
      */
 
 
     try {
-        const response = await deleteUserById(username);
+        const response = await userDAO.deleteUserById(username);
         const data = {}
 
+        // block to check we get back some response
         if (!response) {
             data.message = "Sorry something went wrong.";
         }

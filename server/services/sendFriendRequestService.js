@@ -1,12 +1,14 @@
-const { getUserByUsername } = require("../repositories/userDAO");
-const { sendFriendReuest } = require("../repositories/friendshipDAO");
+const userDAO = require("../repositories/userDAO");
+const friendshipDAO = require("../repositories/friendshipDAO");
 const { dataResponse } = require("../utils/dataResponse");
 
 async function friendRequest(userId, username, targetUsername) {
     /**
      * service layer function to handle friend request
      *
-     *  userId will be present but targetUsername might not 
+     * userId - will be present, grabbed from auth middleware
+     * username - will be present, grabbed from auth middleware
+     * targetUsernaem - will be present, valdiated by middleware
      */
     try {
         const data = {};
@@ -18,7 +20,7 @@ async function friendRequest(userId, username, targetUsername) {
         }
 
         // calling the DAO layer function for user to get user by targetUsername
-        const returnedUser = await getUserByUsername(targetUsername);
+        const returnedUser = await userDAO.getUserByUsername(targetUsername);
 
         // block to see if no user is found by targetUsername
         if (returnedUser.Count === 0) {
@@ -38,7 +40,7 @@ async function friendRequest(userId, username, targetUsername) {
         }
 
         // getting the response from sending a friend request
-        const response = await sendFriendReuest(userId, returnedUser.Items[0].user_id, username, targetUsername);
+        const response = await friendshipDAO.sendFriendReuest(userId, returnedUser.Items[0].user_id, username, targetUsername);
 
         data.message = `friend request sent to ${targetUsername}`;
         return dataResponse(200, 'success', data);

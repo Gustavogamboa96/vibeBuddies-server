@@ -11,6 +11,8 @@ const USERS_TABLE = "users_table"
 async function deleteUserById(username) {
   /**
    * repository layer function to delete a user from the database
+   * 
+   * username - passed from service layer
    */
 
   try {
@@ -30,6 +32,7 @@ async function deleteUserById(username) {
 async function getUserByUsername(username) {
   /**
    * repository layer function to handle the querying of a user by username
+   * 
    * username - string
    */
 
@@ -55,6 +58,8 @@ async function getUserByUsername(username) {
 async function createUser(user) {
   /**
    * repository layer function to handle creating a new user
+   * 
+   * user - object
    */
 
   const command = new PutCommand({

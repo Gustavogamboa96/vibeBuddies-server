@@ -6,8 +6,6 @@ const {
     DeleteCommand,
     ScanCommand,
     QueryCommand } = require("@aws-sdk/lib-dynamodb");
-QueryCommand,
-    BatchWriteCommand} = require("@aws-sdk/lib-dynamodb");
 const chunkArray = require("../utils/splitDataInChunks");
 
 const TableName = "vibe_checks_table";

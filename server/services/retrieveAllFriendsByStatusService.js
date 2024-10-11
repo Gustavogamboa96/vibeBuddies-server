@@ -5,7 +5,7 @@ async function retrieveAllFriendsByStatus(userId, status) {
     /**
      * service layer function to handle the retrieval of friends by given status
      * 
-     * status by default should be accepted but can be changed to pending
+     * status - by default is accepted
      */
     try {
         const data = {}
@@ -18,7 +18,6 @@ async function retrieveAllFriendsByStatus(userId, status) {
 
         // DAO layer function to get all friends by status
         const retrievedData = await friendShipDAO.retrieveAllFriendsByStatus(userId, status);
-        // console.log(retrievedData);
 
         // block to handle if no data is present
         if (retrievedData.Count === 0) {
@@ -35,6 +34,7 @@ async function retrieveAllFriendsByStatus(userId, status) {
                 ...itemObj
             }
 
+            // pushing data to our new object
             data.friendList.push(friendObj);
         })
 
