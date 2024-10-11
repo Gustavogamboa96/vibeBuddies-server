@@ -1,4 +1,5 @@
 const userDAO = require("../repositories/userDAO");
+const vibeCheckService = require("../services/vibeCheckService");
 const { dataResponse } = require("../utils/dataResponse");
 
 async function deleteUser(username, userId) {
@@ -11,6 +12,8 @@ async function deleteUser(username, userId) {
 
 
     try {
+        const deletedVibeCheck = vibeCheckService.deleteAllVibeChecksByUserId(userId);
+
         const response = await userDAO.deleteUserById(username);
         const data = {}
 
