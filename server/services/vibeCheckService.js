@@ -223,20 +223,20 @@ async function getVibeChecksByUserId(user_id, target_user_id){
     try{
         const data = {};
         if(user_id){
-        if(target_user_id){
-            const checkIdExists = await userDao.findUserById(target_user_id);
-            if(checkIdExists.Items.length === 0){
-                data.message = 'No user was found with that id';
-                return dataResponse(401, "fail", data);
+            if(target_user_id){
+                const checkIdExists = await userDao.findUserById(target_user_id);
+                if(checkIdExists.Items.length === 0){
+                    data.message = 'No user was found with that id';
+                    return dataResponse(401, "fail", data);
+                }
+                const returnedVibeChecks = await dao.getItemsByUserId(target_user_id);
+                if (returnedVibeChecks.Count === 0 || returnedVibeChecks.Items.length === 0) {
+                    data.message = "VibeChecks for target_user_id couldn't be retrieved";
+                    return dataResponse(401, "fail", data);
+                }
+                data.returnedVibeChecks = returnedVibeChecks.Items;
+                return dataResponse(200, "success", data);
             }
-            const returnedVibeChecks = await dao.getItemsByUserId(target_user_id);
-            if (returnedVibeChecks.Count === 0 || returnedVibeChecks.Items.length === 0) {
-                data.message = "VibeChecks for target_user_id couldn't be retrieved";
-                return dataResponse(401, "fail", data);
-            }
-            data.returnedVibeChecks = returnedVibeChecks.Items;
-            return dataResponse(200, "success", data);
-        }
         }else {
             data.message = 'No user_id was passed, might have to refresh session';
             return dataResponse(401, "fail", data);
@@ -254,6 +254,10 @@ async function deleteAllVibeChecksByUserId(user_id){
         const data = {};
         if(user_id){
             const vibeChecks = await getVibeChecksByUserId(user_id, user_id); //in this case user and target_user are the same
+            if (!vibeChecks?.data?.returnedVibeChecks?.length) {
+                data.message = "No vibeChecks returned by getVibeChecksByUserId"
+                return dataResponse(404, "fail", data);
+            }
                 const vibeCheckIds = vibeChecks.data.returnedVibeChecks
                 .map(vc => {
                     return { vibe_check_id: vc.vibe_check_id };
