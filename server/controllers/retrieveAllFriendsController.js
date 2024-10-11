@@ -12,7 +12,7 @@ async function retrieveAllFriends(req, res) {
 
         // destructuring required params
         const { status = "accepted" } = req.query;
-        const { userId } = req.params;
+        const { user_id: userId } = req.user;
 
         const response = await retrieveAllFriendsByStatus(userId, status);
 
