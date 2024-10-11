@@ -9,10 +9,10 @@ async function deleteAccount(req, res) {
      */
 
     try {
-        const { username } = req.user;
+        const { username, user_id: userId } = req.user;
 
         // calling our service layer function, returns an object
-        const response = await deleteUser(username);
+        const response = await deleteUser(username, userId);
 
         // responding to client with object data
         return res.status(response.httpStatus).send();
