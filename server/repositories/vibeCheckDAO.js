@@ -5,7 +5,8 @@ const {
     UpdateCommand,
     DeleteCommand,
     ScanCommand,
-    QueryCommand } = require("@aws-sdk/lib-dynamodb");
+    QueryCommand,
+    BatchWriteCommand} = require("@aws-sdk/lib-dynamodb");
 const chunkArray = require("../utils/splitDataInChunks");
 
 const TableName = "vibe_checks_table";
@@ -234,13 +235,13 @@ async function batchDeleteVibeChecks(vibe_checks_to_delete) {
 
         const command = new BatchWriteCommand({
             RequestItems: {
-                TableName: deleteRequests // Replace with your table name
+                'vibe_checks_table': deleteRequests // Replace with your table name
             }
         });
 
         try {
             const data = await documentClient.send(command);
-            console.log('Batch delete successful:', result);
+            //console.log('Batch delete successful:', data);
             return data;
         } catch (error) {
             console.error('Error performing batch delete:', error);

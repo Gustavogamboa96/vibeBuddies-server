@@ -253,11 +253,12 @@ async function deleteAllVibeChecksByUserId(user_id){
     try{
         const data = {};
         if(user_id){
-            const vibeChecks = await getVibeChecksByUserId(user_id);
-            const vibeCheckIds = vibeChecks.data.returnedVibeChecks
-                                .forEach(vc => {
-                                    return { vibe_check_id: vc.vibe_check_id };
-                                });
+            const vibeChecks = await getVibeChecksByUserId(user_id, user_id); //in this case user and target_user are the same
+                const vibeCheckIds = vibeChecks.data.returnedVibeChecks
+                .map(vc => {
+                    return { vibe_check_id: vc.vibe_check_id };
+                });
+                // console.log(vibeCheckIds);
             data.batchResult = await dao.batchDeleteVibeChecks(vibeCheckIds);
             return dataResponse(200, "success", data)
         }else {
