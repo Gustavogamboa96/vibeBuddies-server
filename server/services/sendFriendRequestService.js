@@ -60,7 +60,7 @@ async function friendRequest(userId, username, targetUsername) {
         }
 
         // getting the response from sending a friend request
-        const response = await friendshipDAO.sendFriendReuest(userId, targetUserId, username, targetUsername);
+        await friendshipDAO.sendFriendReuest(userId, targetUserId, username, targetUsername);
 
         data.message = `friend request sent to ${targetUsername}`;
         return dataResponse(200, 'success', data);
