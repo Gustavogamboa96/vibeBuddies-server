@@ -12,7 +12,7 @@ async function deleteUser(username, userId) {
 
 
     try {
-        const deletedVibeCheck = vibeCheckService.deleteAllVibeChecksByUserId(userId);
+        const deletedVibeCheck = await vibeCheckService.deleteAllVibeChecksByUserId(userId);
 
         const response = await userDAO.deleteUserById(username);
         const data = {}
