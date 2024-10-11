@@ -73,7 +73,7 @@ async function findFriendRequest(userId, targetUserId, status = "pending") {
     try {
         const params = {
             TableName: TABLE_NAME,
-            KeyConditionExpression: "#userId = :targetUserId  AND #targetUserId = :userId",
+            KeyConditionExpression: "#userId = :userId  AND #targetUserId = :targetUserId",
             FilterExpression: " #friendStatus = :status",
             ExpressionAttributeNames: {
                 "#userId": "userId",

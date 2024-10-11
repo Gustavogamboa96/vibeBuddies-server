@@ -36,10 +36,10 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
         // block checks that status is valid type
         if (status !== "denied" && status !== "accepted") {
             data.message = "invalid - status can only be accepted or denied";
-            return dataResponse(400, 'fail', data); s
+            return dataResponse(400, 'fail', data);
         }
 
-        const friendRequestSearch = await friendShipDAO.findFriendRequest(userId, targetUserId);
+        const friendRequestSearch = await friendShipDAO.findFriendRequest(targetUserId, userId);
 
         // block checks to see if the friend request exists within the database
         if (friendRequestSearch.Count === 0) {

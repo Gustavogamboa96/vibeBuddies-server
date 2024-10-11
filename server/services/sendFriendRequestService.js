@@ -28,7 +28,7 @@ async function friendRequest(userId, username, targetUsername) {
             return dataResponse(404, 'fail', data);
         }
 
-        // 
+        // testing that the user can not send a friend request to themselves
         if (username === targetUsername) {
             data.message = "invalid - can not send request to yourself";
             return dataResponse(400, 'fail', data);
@@ -40,8 +40,27 @@ async function friendRequest(userId, username, targetUsername) {
             return dataResponse(404, 'fail', data);
         }
 
+        // destructuring userId
+        const { user_id: targetUserId } = returnedUser.Items[0];
+
+        const checkIfAlreadyFriends = await friendshipDAO.findFriendRequest(userId, targetUserId, "accepted");
+
+        // block determines if users are already friends
+        if (checkIfAlreadyFriends.Count === 1) {
+            data.message = `invalid - you are already friends with ${targetUsername}`
+            return dataResponse(400, 'fail', data);
+        }
+
+        const checkIfAlreadyPending = await friendshipDAO.findFriendRequest(targetUserId, userId);
+
+        // block checks if user already has a friend request from the user they are trying to add
+        if (checkIfAlreadyPending.Count === 1) {
+            data.message = `invalid - already have a pending friend request from ${targetUsername}`;
+            return dataResponse(400, 'fail', data);
+        }
+
         // getting the response from sending a friend request
-        const response = await friendshipDAO.sendFriendReuest(userId, returnedUser.Items[0].user_id, username, targetUsername);
+        const response = await friendshipDAO.sendFriendReuest(userId, targetUserId, username, targetUsername);
 
         data.message = `friend request sent to ${targetUsername}`;
         return dataResponse(200, 'success', data);
