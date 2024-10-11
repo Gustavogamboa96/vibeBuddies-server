@@ -28,6 +28,7 @@ async function friendRequest(userId, username, targetUsername) {
             return dataResponse(404, 'fail', data);
         }
 
+        // 
         if (username === targetUsername) {
             data.message = "invalid - can not send request to yourself";
             return dataResponse(400, 'fail', data);

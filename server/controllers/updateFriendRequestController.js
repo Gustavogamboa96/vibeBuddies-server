@@ -8,7 +8,7 @@ async function updateFriendRequest(req, res) {
     try {
         // destructuring required params
         const { user_id: userId, username } = req.user;
-        const { status, targetUsername } = req.body;
+        const { status, username: targetUsername } = req.body;
 
         const response = await friendRequestUpdate(userId, username, targetUsername, status);
 

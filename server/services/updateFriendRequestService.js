@@ -30,7 +30,6 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
             data.message = "invalid - user not found";
             return dataResponse(404, 'fail', data);
         }
-        // console.log(returnedUser)
 
         const { user_id: targetUserId } = returnedUser.Items[0];
 
@@ -39,7 +38,6 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
             data.message = "invalid - status can only be accepted or denied";
             return dataResponse(400, 'fail', data); s
         }
-
 
         const friendRequestSearch = await friendShipDAO.findFriendRequest(userId, targetUserId);
 
