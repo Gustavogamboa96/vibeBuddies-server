@@ -44,11 +44,11 @@ async function retrieveAllFriendsByStatus(userId, status) {
     try {
         const params = {
             TableName: TABLE_NAME,
-            IndexName: "userId-index",
-            KeyConditionExpression: "#userId = :userId",
+            IndexName: "targetUserId-index",
+            KeyConditionExpression: "#targetUserId = :userId",
             FilterExpression: " #friendStatus = :status",
             ExpressionAttributeNames: {
-                "#userId": "userId",
+                "#targetUserId": "targetUserId",
                 "#friendStatus": "friendStatus"
             },
             ExpressionAttributeValues: {
