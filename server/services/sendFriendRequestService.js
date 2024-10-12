@@ -19,6 +19,8 @@ async function friendRequest(userId, username, targetUsername) {
             return dataResponse(400, 'fail', data);
         }
 
+        targetUsername = targetUsername.trim();
+
         // calling the DAO layer function for user to get user by targetUsername
         const returnedUser = await userDAO.getUserByUsername(targetUsername);
 

@@ -19,9 +19,11 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
 
         // block checks that body contains targetUsername
         if (!targetUsername || typeof targetUsername !== "string") {
-            data.message = "invalid - targetUsername of type string is required";
+            data.message = "invalid - status of type string is required";
             return dataResponse(400, 'fail', data);
         }
+
+        targetUsername = targetUsername.trim();
 
         const returnedUser = await userDAO.getUserByUsername(targetUsername);
 
@@ -32,6 +34,14 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
         }
 
         const { user_id: targetUserId } = returnedUser.Items[0];
+
+        // block validates status
+        if (!status || typeof status !== "string") {
+            data.message = "invalid - targetUsername of type string is required";
+            return dataResponse(400, 'fail', data);
+        }
+
+        status = status.trim();
 
         // block checks that status is valid type
         if (status !== "denied" && status !== "accepted") {

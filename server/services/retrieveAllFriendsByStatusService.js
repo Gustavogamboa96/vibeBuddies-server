@@ -10,6 +10,14 @@ async function retrieveAllFriendsByStatus(userId, status) {
     try {
         const data = {}
 
+        // block validates status
+        if (!status || typeof status !== "string") {
+            data.message = "invalid - status of type string is required";
+            return dataResponse(400, 'fail', data);
+        }
+
+        status = status.trim();
+
         // block checks that status is valid query
         if (status !== "accepted" && status !== "pending") {
             data.message = "invalid - query parameter status can only be accepted or pending";
