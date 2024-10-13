@@ -37,7 +37,7 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
 
         // block validates status
         if (!status || typeof status !== "string") {
-            data.message = "invalid - targetUsername of type string is required";
+            data.message = "invalid - status of type string is required";
             return dataResponse(400, 'fail', data);
         }
 
@@ -70,7 +70,7 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
             await friendShipDAO.deleteFriend(userId, targetUserId);
             await friendShipDAO.deleteFriend(targetUserId, userId);
             data.message = "friend request denied";
-            return dataResponse(200, "accepted", data);
+            return dataResponse(200, "success", data);
         }
 
     } catch (error) {
