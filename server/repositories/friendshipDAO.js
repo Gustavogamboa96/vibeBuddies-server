@@ -64,6 +64,35 @@ async function retrieveAllFriendsByStatus(userId, status) {
     }
 }
 
+async function retrievePendingRequestSent(userId) {
+    /**
+     * async function to retrieve any pending request sent out from logged in user
+     * 
+     * expects userId
+     */
+    try {
+        const params = {
+            TableName: TABLE_NAME,
+            IndexName: "userId-index",
+            KeyConditionExpression: "#userId = :userId",
+            FilterExpression: " #friendStatus = :pending",
+            ExpressionAttributeNames: {
+                "#userId": "userId",
+                "#friendStatus": "friendStatus"
+            },
+            ExpressionAttributeValues: {
+                ":userId": userId,
+                ":pending": "pending"
+            }
+        }
+
+        return await documentClient.send(new QueryCommand(params));
+
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
 async function findFriendRequest(userId, targetUserId, status = "pending") {
     /**
      * DAO layer function to retrieve all friends by the provided status
@@ -146,4 +175,4 @@ async function deleteFriend(userId, targetUserId) {
     }
 }
 
-module.exports = { sendFriendReuest, retrieveAllFriendsByStatus, findFriendRequest, acceptFriendRequest, deleteFriend };
+module.exports = { retrievePendingRequestSent, sendFriendReuest, retrieveAllFriendsByStatus, findFriendRequest, acceptFriendRequest, deleteFriend };
