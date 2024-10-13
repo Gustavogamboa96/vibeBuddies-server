@@ -14,7 +14,7 @@ app.use("/vibe-checks", vibeCheck);
 
 app.use("", authentication)
 app.use("/users", accounts);
-app.use("/users", friendsRoute);
+app.use("/friends", friendsRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port which is ${PORT}`);
