@@ -18,6 +18,8 @@ async function deleteFriend(userId, username, targetUsername) {
             return dataResponse(400, 'fail', data);
         }
 
+        targetUsername = targetUsername.trim();
+
         const returnedUser = await userDAO.getUserByUsername(targetUsername);
 
         // block checks if returnedUser does not exists
@@ -40,7 +42,7 @@ async function deleteFriend(userId, username, targetUsername) {
 
         return dataResponse(204, "success");
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 }
 

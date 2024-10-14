@@ -10,6 +10,14 @@ async function retrieveAllFriendsByStatus(userId, status) {
     try {
         const data = {}
 
+        // block validates status
+        if (!status || typeof status !== "string") {
+            data.message = "invalid - status of type string is required";
+            return dataResponse(400, 'fail', data);
+        }
+
+        status = status.trim();
+
         // block checks that status is valid query
         if (status !== "accepted" && status !== "pending") {
             data.message = "invalid - query parameter status can only be accepted or pending";
@@ -25,7 +33,7 @@ async function retrieveAllFriendsByStatus(userId, status) {
             return dataResponse(200, 'success', data);
         }
 
-        // this is will handle the collection of users
+        // array to handle collection of users
         data.friendList = [];
 
         // block to return the friends returned
@@ -41,7 +49,7 @@ async function retrieveAllFriendsByStatus(userId, status) {
         data.message = `${retrievedData.Count} items found with status ${status}`;
         return dataResponse(200, 'success', data);
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 }
 

@@ -61,3 +61,21 @@ Error: Cannot read properties of undefined (reading 'data')
 2024-10-11 15:40:17 [error]: Failed to delete user's VibeChecks: Cannot read properties of undefined (reading 'map')
 2024-10-11 15:49:08 [error]: Failed to delete user's VibeChecks: Cannot read properties of undefined (reading 'map')
 2024-10-11 15:50:42 [error]: Failed to delete user's VibeChecks: Cannot read properties of undefined (reading 'map')
+2024-10-13 19:04:33 [error]: Error in deleteAccountService.js 
+2024-10-13 19:05:15 [error]: Error in deleteAccountService.js 
+2024-10-13 19:06:36 [error]: Error in deleteAccountService.js 
+2024-10-13 19:13:08 [warn]: deleting all vibechecks for user: Trent_Sanford98
+2024-10-13 19:13:08 [warn]: deleting all friends associated with user: Trent_Sanford98
+2024-10-13 19:13:08 [warn]: deleting user: Trent_Sanford98
+2024-10-13 19:13:09 [warn]: deleting all vibechecks for user: Candice41
+2024-10-13 19:13:09 [warn]: deleting all friends associated with user: Candice41
+2024-10-13 19:13:09 [warn]: deleting user: Candice41
+2024-10-13 19:13:09 [warn]: deleting all vibechecks for user: Stewart89
+2024-10-13 19:13:09 [warn]: deleting all friends associated with user: Stewart89
+2024-10-13 19:13:10 [warn]: deleting user: Stewart89
+2024-10-13 19:13:10 [warn]: deleting all vibechecks for user: Luciano79
+2024-10-13 19:13:10 [warn]: deleting all friends associated with user: Luciano79
+2024-10-13 19:13:10 [warn]: deleting user: Luciano79
+2024-10-13 19:13:10 [warn]: deleting all vibechecks for user: Eddie.Stanton68
+2024-10-13 19:13:10 [warn]: deleting all friends associated with user: Eddie.Stanton68
+2024-10-13 19:13:11 [warn]: deleting user: Eddie.Stanton68

@@ -19,9 +19,11 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
 
         // block checks that body contains targetUsername
         if (!targetUsername || typeof targetUsername !== "string") {
-            data.message = "invalid - targetUsername of type string is required";
+            data.message = "invalid - status of type string is required";
             return dataResponse(400, 'fail', data);
         }
+
+        targetUsername = targetUsername.trim();
 
         const returnedUser = await userDAO.getUserByUsername(targetUsername);
 
@@ -32,6 +34,14 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
         }
 
         const { user_id: targetUserId } = returnedUser.Items[0];
+
+        // block validates status
+        if (!status || typeof status !== "string") {
+            data.message = "invalid - status of type string is required";
+            return dataResponse(400, 'fail', data);
+        }
+
+        status = status.trim();
 
         // block checks that status is valid type
         if (status !== "denied" && status !== "accepted") {
@@ -47,7 +57,7 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
             return dataResponse(404, 'fail', data);
         }
 
-        // block accepts the friend request
+        // block accepts the friend request, and then adds the multidirection friend link
         if (status === "accepted") {
             await friendShipDAO.acceptFriendRequest(userId, targetUserId, username, targetUsername);
             await friendShipDAO.sendFriendReuest(userId, targetUserId, username, targetUsername, "accepted");
@@ -60,11 +70,11 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
             await friendShipDAO.deleteFriend(userId, targetUserId);
             await friendShipDAO.deleteFriend(targetUserId, userId);
             data.message = "friend request denied";
-            return dataResponse(200, "accepted", data);
+            return dataResponse(200, "success", data);
         }
 
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 }
 

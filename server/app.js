@@ -1,6 +1,7 @@
 const express = require('express');
 const accounts = require("./routes/usersRoute");
-const vibeCheck = require('./routes/vibeCheckRoute')
+const vibeCheck = require('./routes/vibeCheckRoute');
+const friendsRoute = require("./routes/friendsRoute");
 const authentication = require("./routes/authenticationRoute");
 
 const PORT = process.env.PORT || 3000;
@@ -13,6 +14,7 @@ app.use("/vibe-checks", vibeCheck);
 
 app.use("", authentication)
 app.use("/users", accounts);
+app.use("/friends", friendsRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port which is ${PORT}`);

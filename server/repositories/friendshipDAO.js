@@ -44,16 +44,45 @@ async function retrieveAllFriendsByStatus(userId, status) {
     try {
         const params = {
             TableName: TABLE_NAME,
+            IndexName: "targetUserId-index",
+            KeyConditionExpression: "#targetUserId = :userId",
+            FilterExpression: " #friendStatus = :status",
+            ExpressionAttributeNames: {
+                "#targetUserId": "targetUserId",
+                "#friendStatus": "friendStatus"
+            },
+            ExpressionAttributeValues: {
+                ":userId": userId,
+                ":status": status
+            }
+        }
+
+        return await documentClient.send(new QueryCommand(params));
+
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+async function retrievePendingRequestSent(userId) {
+    /**
+     * async function to retrieve any pending request sent out from logged in user
+     * 
+     * expects userId
+     */
+    try {
+        const params = {
+            TableName: TABLE_NAME,
             IndexName: "userId-index",
             KeyConditionExpression: "#userId = :userId",
-            FilterExpression: " #friendStatus = :status",
+            FilterExpression: " #friendStatus = :pending",
             ExpressionAttributeNames: {
                 "#userId": "userId",
                 "#friendStatus": "friendStatus"
             },
             ExpressionAttributeValues: {
                 ":userId": userId,
-                ":status": status
+                ":pending": "pending"
             }
         }
 
@@ -146,4 +175,4 @@ async function deleteFriend(userId, targetUserId) {
     }
 }
 
-module.exports = { sendFriendReuest, retrieveAllFriendsByStatus, findFriendRequest, acceptFriendRequest, deleteFriend };
+module.exports = { retrievePendingRequestSent, sendFriendReuest, retrieveAllFriendsByStatus, findFriendRequest, acceptFriendRequest, deleteFriend };
