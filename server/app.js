@@ -3,12 +3,12 @@ const accounts = require("./routes/usersRoute");
 const vibeCheck = require('./routes/vibeCheckRoute');
 const friendsRoute = require("./routes/friendsRoute");
 const authentication = require("./routes/authenticationRoute");
-const cors = require("cors");
+const cors = require('cors');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 // comment to make a new commit
 
 app.use("/vibe-checks", vibeCheck);
