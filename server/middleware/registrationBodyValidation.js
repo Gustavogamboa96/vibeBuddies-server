@@ -1,5 +1,11 @@
 const { dataResponse } = require("../utils/dataResponse")
 
+// Utility function to check for illegal characters
+function containsIllegalCharacters(str) {
+  const illegalChars = /[<>\[\]{}()=|:;,+\*\?%&\s]/
+  return illegalChars.test(str)
+}
+
 function registrationBodyValidation(req, res, next) {
   /**
    * middleware function to handle the checking of the body params
@@ -27,213 +33,59 @@ function registrationBodyValidation(req, res, next) {
     password.length > 20 ||
     !email.includes("@") ||
     !email.includes(".com") ||
-    username.includes("<") ||
-    username.includes(">") ||
-    username.includes("[") ||
-    username.includes("]") ||
-    username.includes("{") ||
-    username.includes("}") ||
-    username.includes("(") ||
-    username.includes(")") ||
-    username.includes("=") ||
-    username.includes("|") ||
-    username.includes(":") ||
-    username.includes(";") ||
-    username.includes(",") ||
-    username.includes("+") ||
-    username.includes("*") ||
-    username.includes("?") ||
-    username.includes("%") ||
-    username.includes("&") ||
-    username.includes(" ") ||
-    password.includes("<") ||
-    password.includes(">") ||
-    password.includes("[") ||
-    password.includes("]") ||
-    password.includes("{") ||
-    password.includes("}") ||
-    password.includes("(") ||
-    password.includes(")") ||
-    password.includes("=") ||
-    password.includes("|") ||
-    password.includes(":") ||
-    password.includes(";") ||
-    password.includes(",") ||
-    password.includes("+") ||
-    password.includes("*") ||
-    password.includes("?") ||
-    password.includes("%") ||
-    password.includes("&") ||
-    password.includes(" ") ||
-    email.includes("<") ||
-    email.includes(">") ||
-    email.includes("[") ||
-    email.includes("]") ||
-    email.includes("{") ||
-    email.includes("}") ||
-    email.includes("(") ||
-    email.includes(")") ||
-    email.includes("=") ||
-    email.includes("|") ||
-    email.includes(":") ||
-    email.includes(";") ||
-    email.includes(",") ||
-    email.includes("+") ||
-    email.includes("*") ||
-    email.includes("?") ||
-    email.includes("%") ||
-    email.includes("&") ||
-    email.includes(" ")
+    containsIllegalCharacters(username) ||
+    containsIllegalCharacters(password) ||
+    containsIllegalCharacters(email)
   ) {
     let data = {}
 
-    // block if both username and passwords are missing
+    // block if both username and password are missing
     if (!username && !password) {
-      // constructing data
       data.message = "username and password are required"
     }
     // block for missing username
     else if (!username) {
-      // constructing data
       data.message = "username is required"
     }
     // block for missing password
     else if (!password) {
-      // constructing data
       data.message = "password is required"
     }
-    // block for missing password
+    // block for missing email
     else if (!email) {
-      // constructing data
       data.message = "email is required"
     } else if (typeof username !== "string" && typeof password !== "string") {
-      // constructing data
       data.message = "invalid username and password types"
     }
     // block checks that params are valid strings
     else if (typeof username !== "string") {
-      // constructing data
       data.message = "invalid username type"
-    }
-
-    // block checks that params are valid strings
-    else if (typeof password !== "string") {
-      // constructing data
+    } else if (typeof password !== "string") {
       data.message = "invalid password type"
-    }
-
-    // block checks that params are valid strings
-    else if (typeof email !== "string") {
-      // constructing data
+    } else if (typeof email !== "string") {
       data.message = "invalid email type"
-    }
-
-    //checks if username is of valid length
-    else if (username.length < 7) {
-      // constructing data
-      data.message = "username must be atleast 7 characters"
-    }
-
-    //checks if username is no longer than 25 characters
-    else if (username.length > 25) {
-      // constructing data
+    } else if (username.length < 7) {
+      data.message = "username must be at least 7 characters"
+    } else if (username.length > 25) {
       data.message = "username must be no longer than 25 characters"
-    }
-
-    //checks if password is of valid length
-    else if (password.length < 7) {
-      // constructing data
-      data.message = "password must be atleast 7 characters"
-    }
-
-    //checks if password is no longer than 20 characters
-    else if (password.length > 20) {
-      // constructing data
+    } else if (password.length < 7) {
+      data.message = "password must be at least 7 characters"
+    } else if (password.length > 20) {
       data.message = "password must be no longer than 20 characters"
-    }
-
-    //checks if email is valid by including "@"
-    else if (!email.includes("@")) {
-      // constructing data
-      data.message = "email url's must contain '@' character"
-    }
-    //checks if email is valid by including ".com"
-    else if (!email.includes(".com")) {
-      // constructing data
-      data.message = "email url's must contain '.com'"
+    } else if (!email.includes("@")) {
+      data.message = "email must contain '@'"
+    } else if (!email.includes(".com")) {
+      data.message = "email must contain '.com'"
     } else if (
-      username.includes("<") ||
-      username.includes(">") ||
-      username.includes("[") ||
-      username.includes("]") ||
-      username.includes("{") ||
-      username.includes("}") ||
-      username.includes("(") ||
-      username.includes(")") ||
-      username.includes("=") ||
-      username.includes("|") ||
-      username.includes(":") ||
-      username.includes(";") ||
-      username.includes(",") ||
-      username.includes("+") ||
-      username.includes("*") ||
-      username.includes("?") ||
-      username.includes("%") ||
-      username.includes("&") ||
-      username.includes(" ")
+      containsIllegalCharacters(username) ||
+      containsIllegalCharacters(password) ||
+      containsIllegalCharacters(email)
     ) {
-      //constructing data
-      data.message = "Illegal characters detected"
-    } else if (
-      password.includes("<") ||
-      password.includes(">") ||
-      password.includes("[") ||
-      password.includes("]") ||
-      password.includes("{") ||
-      password.includes("}") ||
-      password.includes("(") ||
-      password.includes(")") ||
-      password.includes("=") ||
-      password.includes("|") ||
-      password.includes(":") ||
-      password.includes(";") ||
-      password.includes(",") ||
-      password.includes("+") ||
-      password.includes("*") ||
-      password.includes("?") ||
-      password.includes("%") ||
-      password.includes("&") ||
-      password.includes(" ")
-    ) {
-      //constructing data
-      data.message = "Illegal characters detected"
-    } else if (
-      email.includes("<") ||
-      email.includes(">") ||
-      email.includes("[") ||
-      email.includes("]") ||
-      email.includes("{") ||
-      email.includes("}") ||
-      email.includes("(") ||
-      email.includes(")") ||
-      email.includes("=") ||
-      email.includes("|") ||
-      email.includes(":") ||
-      email.includes(";") ||
-      email.includes(",") ||
-      email.includes("+") ||
-      email.includes("*") ||
-      email.includes("?") ||
-      email.includes("%") ||
-      email.includes("&") ||
-      email.includes(" ")
-    ) {
-      //constructing data
       data.message = "Illegal characters detected"
     }
 
     // constructing response
-    response = dataResponse(400, "fail", data)
+    const response = dataResponse(400, "fail", data)
 
     // returning response
     return res.status(response.httpStatus).json({
