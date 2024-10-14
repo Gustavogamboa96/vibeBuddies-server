@@ -33,7 +33,7 @@ async function retrieveAllFriendsByStatus(userId, status) {
             return dataResponse(200, 'success', data);
         }
 
-        // this is will handle the collection of users
+        // array to handle collection of users
         data.friendList = [];
 
         // block to return the friends returned
@@ -49,7 +49,7 @@ async function retrieveAllFriendsByStatus(userId, status) {
         data.message = `${retrievedData.Count} items found with status ${status}`;
         return dataResponse(200, 'success', data);
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 }
 

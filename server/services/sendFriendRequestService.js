@@ -30,7 +30,7 @@ async function friendRequest(userId, username, targetUsername) {
             return dataResponse(404, 'fail', data);
         }
 
-        // testing that the user can not send a friend request to themselves
+        // block ensures user can not send friend request to themselves
         if (username === targetUsername) {
             data.message = "invalid - can not send request to yourself";
             return dataResponse(400, 'fail', data);

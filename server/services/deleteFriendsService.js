@@ -42,7 +42,7 @@ async function deleteFriend(userId, username, targetUsername) {
 
         return dataResponse(204, "success");
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 }
 

@@ -2,11 +2,12 @@ const userDAO = require("../repositories/userDAO");
 const vibeCheckService = require("../services/vibeCheckService");
 const { deleteAllFriends } = require("../services/deleteAllFriendsService");
 const { dataResponse } = require("../utils/dataResponse");
+const logger = require("../utils/logger");
 
 async function deleteUser(username, userId) {
     /**
      * service layer function to handle the deletion of a user based on their id
-     * deletes users vibeChecks and friends
+     * deletes users vibeChecks and friends before user gets deleted
      * 
      * username - grabbed from the auth middleware
      * userId - grabbed from the auth middleware
@@ -15,25 +16,23 @@ async function deleteUser(username, userId) {
 
     try {
         // deleting all the vibeChecks
+        logger.warn(`deleting all vibechecks for user: ${username}`);
         await vibeCheckService.deleteAllVibeChecksByUserId(userId);
 
-        // calling the delete all friends service
+        // deleting all friends
+        logger.warn(`deleting all friends associated with user: ${username}`);
         await deleteAllFriends(userId);
 
-        const response = await userDAO.deleteUserById(username);
-        const data = {}
+        // deleting the user
+        logger.warn(`deleting user: ${username}`);
+        await userDAO.deleteUserById(username);
 
-        // block to check we get back some response
-        if (!response) {
-            data.message = "Sorry something went wrong.";
-        }
-
-        data.message = `${username} deleted successfully`;
-
-        return dataResponse(204, "success", data);
+        // data response
+        return dataResponse(204, "success");
 
     } catch (error) {
-        throw new Error(error.message);
+        logger.error(`Error in deleteAccountService.js: ${error.message} `);
+        throw error;
     }
 
 }

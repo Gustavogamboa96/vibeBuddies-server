@@ -57,7 +57,7 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
             return dataResponse(404, 'fail', data);
         }
 
-        // block accepts the friend request
+        // block accepts the friend request, and then adds the multidirection friend link
         if (status === "accepted") {
             await friendShipDAO.acceptFriendRequest(userId, targetUserId, username, targetUsername);
             await friendShipDAO.sendFriendReuest(userId, targetUserId, username, targetUsername, "accepted");
@@ -74,7 +74,7 @@ async function friendRequestUpdate(userId, username, targetUsername, status) {
         }
 
     } catch (error) {
-        throw new Error(error.message);
+        throw error;
     }
 }
 

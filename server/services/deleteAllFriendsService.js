@@ -2,18 +2,24 @@ const { dataResponse } = require("../utils/dataResponse");
 const friendshipDAO = require("../repositories/friendshipDAO");
 
 async function deleteAllFriends(userId) {
+    /**
+     * service layer function to delete all the friends associated with a user
+     * 
+     * userId - required and expected
+     */
     try {
-        // getting all my friendShips
+        // getting friends
         const acceptedFriends = await friendshipDAO.retrieveAllFriendsByStatus(userId, "accepted");
+        // getting friend requests
         const pendingFriends = await friendshipDAO.retrieveAllFriendsByStatus(userId, "pending");
+        // getting friend request sent out
         const sentOutRequest = await friendshipDAO.retrievePendingRequestSent(userId);
 
-        // block deletes and pending request user sent out
+        // block deletes any friend requests sent out by user
         if (sentOutRequest.Count > 0) {
             const { Items } = sentOutRequest;
             Items.forEach(async (value, index) => {
                 await friendshipDAO.deleteFriend(value.userId, value.targetUserId);
-                // await friendshipDAO.deleteFriend(value.targetUserId, value.userId);
             })
         }
 
@@ -26,17 +32,16 @@ async function deleteAllFriends(userId) {
             })
         }
 
-        // block deletes any pending request you might have
+        // block deletes any pending request user might have
         if (pendingFriends.Count > 0) {
             const { Items } = pendingFriends;
             Items.forEach(async (value, index) => {
                 await friendshipDAO.deleteFriend(value.userId, value.targetUserId);
-                // await friendshipDAO.deleteFriend(value.targetUserId, value.userId);
             })
         }
 
     } catch (error) {
-        throw new error.message;
+        throw error;
     }
 }
 
