@@ -1,10 +1,13 @@
-const { createVibeCheck, getVibeCheckById, getAllVibeChecks, deleteVibeCheck, likeOrDislike } = require('../services/vibeCheckService');
+const { createVibeCheck, getVibeCheckById, getAllVibeChecks, deleteVibeCheck, likeOrDislike, getVibeChecksByUserId, deleteAllVibeChecksByUserId } = require('../services/vibeCheckService');
 const dao = require('../repositories/vibeCheckDAO');
 const uuid = require('uuid');
+const userDao = require('../repositories/userDAO');
+const vibeCheckService = require("../services/vibeCheckService")
 
 
 jest.mock('uuid'); // Mock uuid
 jest.mock('../repositories/vibeCheckDAO'); // Mock the dao
+jest.mock('../repositories/userDAO');
 
 
 describe('VibeCheck Service', () => {
@@ -23,7 +26,7 @@ describe('VibeCheck Service', () => {
 
             expect(result.httpStatus).toBe(401);
             expect(result.status).toBe('fail');
-            expect(result.data.message).toBe("Review can't be empty");
+            expect(result.data.message).toBe("Review can't be non string or missing");
         });
 
         it('should return 401 if rating is out of range', async () => {
@@ -41,19 +44,20 @@ describe('VibeCheck Service', () => {
 
         it('should create a VibeCheck successfully and return 200', async () => {
             const user_id = 'user123';
-            const track_id = 'track123';
+            const album_id = {'name':'track123'};
             const review = 'Awesome track';
             const rating = 5;
 
             const vibeCheckMock = {
                 vibe_check_id: 'mock-id',
                 user_id,
-                track_id,
+                album_id,
                 review,
                 rating,
                 likes: 0,
                 dislikes: 0,
-                //adding one for time it takes to run test to match
+                liked_by: [],
+                disliked_by: [],
                 timestamp: Date.now(),
             };
 
@@ -61,7 +65,7 @@ describe('VibeCheck Service', () => {
             dao.addItem.mockResolvedValue(); // mock successful addItem
             dao.getItemById.mockResolvedValue({ Item: vibeCheckMock }); // mock getItemById
 
-            const result = await createVibeCheck(user_id, track_id, review, rating);
+            const result = await createVibeCheck(user_id, album_id, review, rating);
 
             expect(result.httpStatus).toBe(200);
             expect(result.status).toBe('success');
@@ -213,4 +217,40 @@ describe('VibeCheck Service', () => {
             expect(dao.getAllItems).not.toHaveBeenCalled();
         });
     });
+
+    describe('getVibeChecksByUserId', () => {
+        it('should return 401 if no user_id is passed', async () => {
+            const result = await getVibeChecksByUserId('', 'target_user123');
+            
+            expect(result.httpStatus).toBe(401);
+            expect(result.status).toBe('fail');
+            expect(result.data.message).toBe('No user_id was passed, might have to refresh session');
+        });
+    
+        it('should return 401 if no target_user_id is found', async () => {
+            const mockUserId = 'user123';
+            const mockTargetUserId = 'nonexistentUser';
+    
+            userDao.findUserById.mockResolvedValue({ Items: [] }); // no user found
+    
+            const result = await getVibeChecksByUserId(mockUserId, mockTargetUserId);
+    
+            expect(result.httpStatus).toBe(401);
+            expect(result.status).toBe('fail');
+            expect(result.data.message).toBe('No user was found with that id');
+        });
+    });
+    
+    describe('deleteAllVibeChecksByUserId', () => {
+        it('should return 401 if no user_id is passed', async () => {
+            const result = await deleteAllVibeChecksByUserId('');
+    
+            expect(result.httpStatus).toBe(401);
+            expect(result.status).toBe('fail');
+            expect(result.data.message).toBe('No user_id was passed, might have to refresh session');
+        });
+    
+
+    });
+    
 });

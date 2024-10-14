@@ -49,7 +49,7 @@ async function login(username, password) {
         data.token = token;
         return dataResponse(200, "success", data);
     } catch (error) {
-        throw new Error(error.message);
+        throw new error;
     }
 }
 

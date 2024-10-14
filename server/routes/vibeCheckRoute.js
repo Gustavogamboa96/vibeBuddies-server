@@ -10,6 +10,8 @@ router.get("/", authenticateToken, vibeCheckController.getAllVibeChecksControlle
 
 router.get("/:id", authenticateToken, vibeCheckController.getVibeCheckByIdController);
 
+router.get("/users/:target_user_id", authenticateToken, vibeCheckController.getVibeChecksByUserIdController);
+
 router.delete("/:id", authenticateToken, vibeCheckController.deleteVibeCheckController);
 
 router.patch("/:id/:likeordislike", authenticateToken, vibeCheckController.likeOrDislikeController);

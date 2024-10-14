@@ -12,12 +12,12 @@ async function registrationController(req, res) {
    */
 
   // destructuring params
-  const { username, age, email, password } = req.body
+  const { username, email, password } = req.body
 
   // try/catch block for async calls
   try {
     // calling our service layer function, returns an object
-    const response = await register(username, age, email, password)
+    const response = await register(username, email, password)
 
     // responding to client with object data
     res.status(response.httpStatus).json({

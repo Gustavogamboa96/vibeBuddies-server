@@ -7,10 +7,10 @@ const VibeCheckService = require("../services/vibeCheckService");
 async function createVibeCheckController(req, res){
     // const user_id = 123456;
     const user_id = req.user.user_id;
-    const {track_id, review, rating} = req.body;
+    const {album_id, review, rating} = req.body;
     
     try{
-        const response = await VibeCheckService.createVibeCheck(user_id, track_id, review, rating);
+        const response = await VibeCheckService.createVibeCheck(user_id, album_id, review, rating);
         return res.status(response.httpStatus).json({
             status: response.status,
             ...(response.data && { data: response.data })
@@ -89,11 +89,29 @@ async function getVibeCheckByIdController(req, res){
     }
 }
 
+async function getVibeChecksByUserIdController(req, res){
+    const user_id = req.user.user_id;
+    const target_user_id = req.params.target_user_id;
+
+    try{
+        const response = await VibeCheckService.getVibeChecksByUserId(user_id, target_user_id);
+        return res.status(response.httpStatus).json({
+            status: response.status,
+            ...(response.data && { data: response.data })
+        });
+    }catch(error){
+        res.status(401).json({message: error.message});
+    }
+
+}
+
 module.exports = {createVibeCheckController, 
                   getVibeCheckByIdController,
                   getAllVibeChecksController, 
                   deleteVibeCheckController,
-                  likeOrDislikeController}
+                  likeOrDislikeController,
+                  getVibeChecksByUserIdController
+                }
 
 
 
