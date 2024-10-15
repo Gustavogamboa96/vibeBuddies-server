@@ -14,6 +14,6 @@ router.get("/users/:target_user_id", authenticateToken, vibeCheckController.getV
 
 router.delete("/:id?", authenticateToken, vibeCheckController.deleteVibeCheckController);
 
-router.patch("/:id/:likeordislike", authenticateToken, vibeCheckController.likeOrDislikeController);
+router.patch("/:id/:likeordislike?", authenticateToken, vibeCheckController.likeOrDislikeController);
 
 module.exports = router;

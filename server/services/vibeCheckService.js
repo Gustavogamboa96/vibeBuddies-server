@@ -150,6 +150,10 @@ async function likeOrDislike(user_id, vibe_check_id, type) {
         const data = {};
         if (user_id) {
             //checks
+            if (!type ||type.trim() == '') {
+                data.message = "like or dislike can't be empty";
+                return dataResponse(401, "fail", data);
+            }
             if (vibe_check_id.trim() == '') {
                 data.message = "vibe_check_id can't be empty";
                 return dataResponse(401, "fail", data);
