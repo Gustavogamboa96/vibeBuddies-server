@@ -154,6 +154,11 @@ async function likeOrDislike(user_id, vibe_check_id, type) {
                 data.message = "vibe_check_id can't be empty";
                 return dataResponse(401, "fail", data);
             }
+            const checkVCExists = await getVibeCheckById(user_id, vibe_check_id);
+            if(checkVCExists.status !== "success"){
+                data.message = "VibeCheck doesn't exist";
+                return dataResponse(401, "fail", data);
+            }
             if (type !== 'like' && type !== 'dislike') {
                 data.message = "type must be like or dislike";
                 return dataResponse(401, "fail", data);
