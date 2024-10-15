@@ -122,7 +122,7 @@ async function deleteVibeCheck(user_id, vibe_check_id) {
     try {
         const data = {};
         if (user_id) {
-            if (vibe_check_id.trim() == '') {
+            if (vibe_check_id === '' || !vibe_check_id) {
                 data.message = "vibe_check_id can't be empty";
                 return dataResponse(401, "fail", data);
             }
