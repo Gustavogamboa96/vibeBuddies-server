@@ -122,7 +122,7 @@ async function deleteVibeCheck(user_id, vibe_check_id) {
     try {
         const data = {};
         if (user_id) {
-            if (vibe_check_id.trim() == '') {
+            if (vibe_check_id === '' || !vibe_check_id) {
                 data.message = "vibe_check_id can't be empty";
                 return dataResponse(401, "fail", data);
             }
@@ -150,8 +150,17 @@ async function likeOrDislike(user_id, vibe_check_id, type) {
         const data = {};
         if (user_id) {
             //checks
+            if (!type ||type.trim() == '') {
+                data.message = "like or dislike can't be empty";
+                return dataResponse(401, "fail", data);
+            }
             if (vibe_check_id.trim() == '') {
                 data.message = "vibe_check_id can't be empty";
+                return dataResponse(401, "fail", data);
+            }
+            const checkVCExists = await getVibeCheckById(user_id, vibe_check_id);
+            if(checkVCExists.status !== "success"){
+                data.message = "VibeCheck doesn't exist";
                 return dataResponse(401, "fail", data);
             }
             if (type !== 'like' && type !== 'dislike') {
