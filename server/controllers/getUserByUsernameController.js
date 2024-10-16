@@ -7,7 +7,7 @@ async function getUserByUsername(req, res) {
      */
 
     try {
-        const { username } = req.body;
+        const { username } = req.params;
 
         // calling the service layer function to a user based on the username
         const response = await retrieveUserByUsername(username);
