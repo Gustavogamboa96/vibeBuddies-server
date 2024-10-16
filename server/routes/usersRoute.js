@@ -20,7 +20,7 @@ router.delete("", authenticateToken, deleteAccount);
 // route to get personal information
 router.get("/profile", authenticateToken, getPersonalInformation)
 // route to get a user by their username
-router.get("/search", authenticateToken, getUserByUsername);
+router.get("/:username", authenticateToken, getUserByUsername);
 
 
 
