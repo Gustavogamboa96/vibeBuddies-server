@@ -4,7 +4,7 @@ const uuid = require('uuid');
 const logger = require("../utils/logger");
 const userDao = require("../repositories/userDAO");
 
-async function createVibeCheck(user_id, album_id, review, rating) {
+async function createVibeCheck(user_id, username, album_id, review, rating) {
     try {
         const data = {};
         //check valid user_id from request
@@ -36,6 +36,7 @@ async function createVibeCheck(user_id, album_id, review, rating) {
             const vibeCheck = { 
             vibe_check_id,
             user_id,
+            username,
             album_id,
             review,
             rating,
