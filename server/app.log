@@ -79,3 +79,10 @@ Error: Cannot read properties of undefined (reading 'data')
 2024-10-13 19:13:10 [warn]: deleting all vibechecks for user: Eddie.Stanton68
 2024-10-13 19:13:10 [warn]: deleting all friends associated with user: Eddie.Stanton68
 2024-10-13 19:13:11 [warn]: deleting user: Eddie.Stanton68
+2024-10-15 14:19:57 [error]: Failed to get vibeCheck by ID: The provided key element does not match the schema
+2024-10-15 14:19:57 [error]: Failed to update vibeCheck's likes/dislikes: The provided key element does not match the schema
+2024-10-15 14:26:07 [error]: Failed to update vibeCheck's likes/dislikes: Cannot read properties of undefined (reading 'length')
+2024-10-15 14:28:01 [error]: Failed to update vibeCheck's likes/dislikes: Cannot read properties of undefined (reading 'liked_by')
+2024-10-15 14:28:07 [error]: Failed to update vibeCheck's likes/dislikes: Cannot read properties of undefined (reading 'liked_by')
+2024-10-15 14:30:16 [error]: Failed to update vibeCheck's likes/dislikes: Cannot read properties of undefined (reading 'liked_by')
+2024-10-15 14:39:00 [error]: Failed to update vibeCheck's likes/dislikes: Cannot read properties of undefined (reading 'trim')

@@ -1,16 +1,11 @@
 const { errorResponse } = require("../utils/errorResponse");
-const { retrieveUserByUsername } = require("../services/retrieveUserByUsernameService");
+const { getFriendsByUsername } = require("../services/retrieveFriendsByUsernameService");
 
-async function getUserByUsername(req, res) {
-    /**
-     * controller layer function to handle getting a users information
-     */
-
+async function retrieveFriendsByUsername(req, res) {
     try {
-        const { username } = req.params;
+        const { username } = req.params
 
-        // calling the service layer function to a user based on the username
-        const response = await retrieveUserByUsername(username);
+        const response = await getFriendsByUsername(username);
 
         // responding to client with object data
         return res.status(response.httpStatus).json({
@@ -26,4 +21,4 @@ async function getUserByUsername(req, res) {
     }
 }
 
-module.exports = { getUserByUsername }
+module.exports = { retrieveFriendsByUsername }

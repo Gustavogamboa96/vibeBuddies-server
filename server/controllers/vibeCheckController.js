@@ -6,11 +6,11 @@ const VibeCheckService = require("../services/vibeCheckService");
 //post
 async function createVibeCheckController(req, res){
     // const user_id = 123456;
-    const user_id = req.user.user_id;
+    const {user_id, username} = req.user;
     const {album_id, review, rating} = req.body;
     
     try{
-        const response = await VibeCheckService.createVibeCheck(user_id, album_id, review, rating);
+        const response = await VibeCheckService.createVibeCheck(user_id, username, album_id, review, rating);
         return res.status(response.httpStatus).json({
             status: response.status,
             ...(response.data && { data: response.data })

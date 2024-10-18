@@ -6,6 +6,7 @@ const { sendFriendRequest } = require("../controllers/sendFriendRequestControlle
 const { updateFriendRequest } = require("../controllers/updateFriendRequestController");
 const { retrieveAllFriends } = require("../controllers/retrieveAllFriendsController");
 const { deleteFriends } = require("../controllers/deleteFriendsController");
+const { retrieveFriendsByUsername } = require("../controllers/retrieveFriendsByUsernameController");
 
 // middleware
 const authenticateToken = require("../middleware/authenticateToken");
@@ -19,5 +20,7 @@ router.patch("", authenticateToken, updateFriendRequest);
 router.get("", authenticateToken, retrieveAllFriends)
 // route to delete friends
 router.delete("", authenticateToken, deleteFriends)
+// route to get friends of a user by their username, expected in the route param
+router.get("/:username", authenticateToken, retrieveFriendsByUsername);
 
 module.exports = router
