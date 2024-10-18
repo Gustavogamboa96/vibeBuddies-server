@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /server
+  - source: /
     destination: /home/ubuntu/vibeBuddies-server
     overwrite: true
 file_exists_behaviour: OVERWRITE
