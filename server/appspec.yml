@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ubuntu/vibeBuddies-server/server
+  - source: vibeBuddies-server/server
+    destination: /home/ubuntu/vibeBuddies-server
     overwrite: true
 file_exists_behaviour: OVERWRITE
 hooks:
@@ -18,7 +18,7 @@ hooks:
     - location: scripts/application_start.sh
       timeout: 300
       runas: root
-  ApplicationStop:
-    - location: scripts/application_stop.sh
-      timeout: 300
-      runas: root
+  # ApplicationStop:
+  #   - location: scripts/application_stop.sh
+  #     timeout: 300
+  #     runas: root
