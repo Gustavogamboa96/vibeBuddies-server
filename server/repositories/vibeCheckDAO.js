@@ -146,7 +146,7 @@ async function addItemDislikedBy(user_id, vibe_check_id) {
     const command = new UpdateCommand({
         TableName,
         Key: { vibe_check_id: vibe_check_id }, // Replace with your primary key
-        UpdateExpression: "SET disliked_by = list_append(if_not_exists(disliked_by, :empty_list), :user_id)",// Increment by 1
+        UpdateExpression: "SET disliked_by = list_append(if_not_exists(disliked_by, :empty_list), :user_id)",
         ExpressionAttributeValues: {
             ":user_id": user_id,
             ':empty_list': { L: [] },
