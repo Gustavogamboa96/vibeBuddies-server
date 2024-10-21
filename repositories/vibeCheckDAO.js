@@ -79,13 +79,13 @@ async function updateItemLikes(vibe_check_id, value) {
     }
 }
 
-async function addItemLikedBy(user_id, vibe_check_id) {
+async function addItemLikedBy(username, vibe_check_id) {
     const command = new UpdateCommand({
         TableName,
         Key: { vibe_check_id: vibe_check_id }, // Replace with your primary key
-        UpdateExpression: "SET liked_by = list_append(if_not_exists(liked_by, :empty_list), :user_id)",// Increment by 1
+        UpdateExpression: "SET liked_by = list_append(if_not_exists(liked_by, :empty_list), :username)",// Increment by 1
         ExpressionAttributeValues: {
-            ":user_id": user_id,
+            ":username": username,
             ':empty_list': { L: [] },
         },
         ReturnValues: "UPDATED_NEW", // Optional: to get the updated item
@@ -142,13 +142,13 @@ async function updateItemDislikes(vibe_check_id, value) {
     }
 }
 
-async function addItemDislikedBy(user_id, vibe_check_id) {
+async function addItemDislikedBy(username, vibe_check_id) {
     const command = new UpdateCommand({
         TableName,
         Key: { vibe_check_id: vibe_check_id }, // Replace with your primary key
-        UpdateExpression: "SET disliked_by = list_append(if_not_exists(disliked_by, :empty_list), :user_id)",
+        UpdateExpression: "SET disliked_by = list_append(if_not_exists(disliked_by, :empty_list), :username)",
         ExpressionAttributeValues: {
-            ":user_id": user_id,
+            ":username": username,
             ':empty_list': { L: [] },
         },
         ReturnValues: "UPDATED_NEW", // Optional: to get the updated item
