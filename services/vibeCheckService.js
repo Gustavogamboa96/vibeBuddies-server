@@ -146,7 +146,7 @@ async function deleteVibeCheck(user_id, vibe_check_id) {
     }
 }
 
-async function likeOrDislike(user_id, vibe_check_id, type) {
+async function likeOrDislike(user_id, username, vibe_check_id, type) {
     try {
         const data = {};
         if (user_id) {
@@ -173,13 +173,13 @@ async function likeOrDislike(user_id, vibe_check_id, type) {
             let likeValue=1;
             let dislikeValue=1;
             let updatedArray=[];
-            if(vibeCheck.data.returnedVibeCheck.liked_by.includes(user_id)){
+            if(vibeCheck.data.returnedVibeCheck.liked_by.includes(username)){
                 likeValue = -1;
-                updatedArray = vibeCheck.data.returnedVibeCheck.liked_by.filter(id => id !== user_id);
+                updatedArray = vibeCheck.data.returnedVibeCheck.liked_by.filter(id => id !== username);
             }
-            if(vibeCheck.data.returnedVibeCheck.disliked_by.includes(user_id)){
+            if(vibeCheck.data.returnedVibeCheck.disliked_by.includes(username)){
                 dislikeValue = -1;
-                updatedArray = vibeCheck.data.returnedVibeCheck.disliked_by.filter(id => id !== user_id);
+                updatedArray = vibeCheck.data.returnedVibeCheck.disliked_by.filter(id => id !== username);
             }
             
             //for likes
@@ -188,7 +188,7 @@ async function likeOrDislike(user_id, vibe_check_id, type) {
                 const updatedVibeCheck = await dao.updateItemLikes(vibe_check_id, likeValue);
                 //if value 1 then user not in liked_by so add it if not remove it
                 if(likeValue == 1){
-                    updatedLikedBy = await dao.addItemLikedBy([user_id], vibe_check_id);
+                    updatedLikedBy = await dao.addItemLikedBy([username], vibe_check_id);
                 }else{
                     updatedLikedBy = await dao.removeItemLikedBy(updatedArray, vibe_check_id);
                 }
@@ -205,7 +205,7 @@ async function likeOrDislike(user_id, vibe_check_id, type) {
                 let updatedDislikedBy = null;
                 const updatedVibeCheck = await dao.updateItemDislikes(vibe_check_id, dislikeValue);
                 if(dislikeValue == 1){
-                    updatedDislikedBy = await dao.addItemDislikedBy([user_id], vibe_check_id);
+                    updatedDislikedBy = await dao.addItemDislikedBy([username], vibe_check_id);
                 }else{
                     updatedDislikedBy = await dao.removeItemDislikedBy(updatedArray, vibe_check_id);
                 }

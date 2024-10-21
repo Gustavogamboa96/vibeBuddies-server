@@ -1,6 +1,6 @@
 const userDAO = require("../repositories/userDAO");
-const vibeCheckService = require("../services/vibeCheckService");
-const { deleteAllFriends } = require("../services/deleteAllFriendsService");
+const vibeCheckService = require("./vibeCheckService");
+const { deleteAllFriends } = require("./deleteAllFriendsService");
 const { dataResponse } = require("../utils/dataResponse");
 const logger = require("../utils/logger");
 
