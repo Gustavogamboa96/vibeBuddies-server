@@ -15,8 +15,6 @@ async function login(username, password) {
         // data object that will be returned
         const data = {};
 
-        data.message = "breeeh, its the db"
-        return dataResponse(200, "success", data);
         // repository layer function call to get user by username
         const returnedUsers = await userDAO.getUserByUsername(username);
 
