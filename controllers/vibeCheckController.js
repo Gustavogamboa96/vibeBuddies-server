@@ -58,12 +58,12 @@ async function deleteVibeCheckController(req, res){
 //patch
 async function likeOrDislikeController(req, res){
     // const user_id = 123456;
-    const user_id = req.user.user_id;
+    const {user_id, username} = req.user;
     const vibe_check_id = req.params.id;
     const type = req.params.likeordislike; 
 
     try{
-        const response = await VibeCheckService.likeOrDislike(user_id, vibe_check_id, type);
+        const response = await VibeCheckService.likeOrDislike(user_id, username, vibe_check_id, type);
         return res.status(response.httpStatus).json({
             status: response.status,
             ...(response.data && { data: response.data })
