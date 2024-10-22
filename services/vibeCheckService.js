@@ -259,6 +259,36 @@ async function getVibeChecksByUserId(user_id, target_user_id){
     }
 }
 
+async function getVibeChecksByUsername(user_id, target_username){
+    try{
+        const data = {};
+        if(user_id){
+            if(target_username){
+                const checkIdExists = await userDao.getUserByUsername(target_username);
+                if(checkIdExists.Items.length === 0){
+                    data.message = 'No user was found with that username';
+                    return dataResponse(401, "fail", data);
+                }
+                const returnedVibeChecks = await dao.getItemsByUsername(target_username);
+                if (returnedVibeChecks.Count === 0 || returnedVibeChecks.Items.length === 0) {
+                    data.message = "VibeChecks for target_username couldn't be retrieved";
+                    return dataResponse(401, "fail", data);
+                }
+                data.returnedVibeChecks = returnedVibeChecks.Items;
+                return dataResponse(200, "success", data);
+            }
+        }else {
+            data.message = 'No user_id was passed, might have to refresh session';
+            return dataResponse(401, "fail", data);
+        }
+    }catch(error){
+        logger.error(`Failed to get user's VibeChecks: ${error.message}`, {
+            stack: error.stack,
+        });
+        throw new Error(error.message);
+    }
+}
+
 async function deleteAllVibeChecksByUserId(user_id){
     try{
         const data = {};
@@ -287,4 +317,12 @@ async function deleteAllVibeChecksByUserId(user_id){
     }    
 }
 
-module.exports = { createVibeCheck, getVibeCheckById, getAllVibeChecks, deleteVibeCheck, likeOrDislike, getVibeChecksByUserId, deleteAllVibeChecksByUserId };
+module.exports = { createVibeCheck, 
+                    getVibeCheckById, 
+                    getAllVibeChecks, 
+                    deleteVibeCheck, 
+                    likeOrDislike, 
+                    getVibeChecksByUserId, 
+                    deleteAllVibeChecksByUserId, 
+                    getVibeChecksByUsername 
+                };

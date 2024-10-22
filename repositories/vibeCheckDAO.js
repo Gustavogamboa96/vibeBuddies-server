@@ -11,6 +11,7 @@ const chunkArray = require("../utils/splitDataInChunks");
 
 const TableName = "vibe_checks_table";
 
+//used to createVibeChecks
 async function addItem(vibeCheck) {
     const command = new PutCommand({
         TableName,
@@ -26,7 +27,7 @@ async function addItem(vibeCheck) {
     }
 
 }
-
+//get all vibechecks
 async function getAllItems() {
     const command = new ScanCommand({
         TableName
@@ -39,7 +40,7 @@ async function getAllItems() {
         throw err;
     }
 }
-
+//delete a single vibecheck
 async function deleteItem(vibe_check_id) {
     const command = new DeleteCommand({
         TableName,
@@ -57,7 +58,7 @@ async function deleteItem(vibe_check_id) {
         throw new Error(error.message);
     }
 }
-
+//add one like to the count
 async function updateItemLikes(vibe_check_id, value) {
     const command = new UpdateCommand({
         TableName,
@@ -79,6 +80,7 @@ async function updateItemLikes(vibe_check_id, value) {
     }
 }
 
+//add username to the liked_by list
 async function addItemLikedBy(username, vibe_check_id) {
     const command = new UpdateCommand({
         TableName,
@@ -100,6 +102,7 @@ async function addItemLikedBy(username, vibe_check_id) {
     }
 }
 
+//remove username from liked_by list
 async function removeItemLikedBy(newArray, vibe_check_id) {
     const command = new UpdateCommand({
         TableName,
@@ -120,7 +123,7 @@ async function removeItemLikedBy(newArray, vibe_check_id) {
     }
 }
 
-
+//add 1 dislike to count
 async function updateItemDislikes(vibe_check_id, value) {
     const command = new UpdateCommand({
         TableName,
@@ -142,6 +145,7 @@ async function updateItemDislikes(vibe_check_id, value) {
     }
 }
 
+//adds username to disliked_by list
 async function addItemDislikedBy(username, vibe_check_id) {
     const command = new UpdateCommand({
         TableName,
@@ -163,6 +167,7 @@ async function addItemDislikedBy(username, vibe_check_id) {
     }
 }
 
+//removes username from disliked_by list
 async function removeItemDislikedBy(newArray, vibe_check_id) {
     const command = new UpdateCommand({
         TableName,
@@ -184,7 +189,7 @@ async function removeItemDislikedBy(newArray, vibe_check_id) {
 }
 
 
-//getItemById
+//gets vibecheck by its own vibe_check_id
 async function getItemById(vibe_check_id) {
     const command = new GetCommand({
         TableName,
@@ -201,6 +206,8 @@ async function getItemById(vibe_check_id) {
         throw err;
     }
 }
+
+//get all vibechecks by user_id
 async function getItemsByUserId(user_id) {
     const command = new QueryCommand({
         TableName,
@@ -218,6 +225,25 @@ async function getItemsByUserId(user_id) {
     }
 }
 
+//get all vibechecks by username
+async function getItemsByUsername(username) {
+    const command = new QueryCommand({
+        TableName,
+        IndexName: "username-index",
+        KeyConditionExpression: "username = :username", // Query based on user_id
+        ExpressionAttributeValues: {
+            ":username": username,           // Replace with the user_id value
+        },
+    });
+    try {
+        const data = await documentClient.send(command);
+        return data;
+    } catch (error) {
+        console.error("Error getting all items for user from DynamoDB:", error);
+    }
+}
+
+//delete all vibechecks, used to perform by user_id in service
 async function batchDeleteVibeChecks(vibe_checks_to_delete) {
     const MAX_BATCH_SIZE = 25;
 
@@ -261,4 +287,6 @@ module.exports = {getItemById,
                 addItemDislikedBy, 
                 removeItemDislikedBy,
                 getItemsByUserId,
-                batchDeleteVibeChecks};
+                getItemsByUsername,
+                batchDeleteVibeChecks,
+            };
