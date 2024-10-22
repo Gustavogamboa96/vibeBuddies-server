@@ -89,6 +89,8 @@ async function getVibeCheckByIdController(req, res){
     }
 }
 
+
+
 async function getVibeChecksByUserIdController(req, res){
     const user_id = req.user.user_id;
     const target_user_id = req.params.target_user_id;
@@ -104,13 +106,30 @@ async function getVibeChecksByUserIdController(req, res){
     }
 
 }
+//TODO
+async function getVibeChecksByUsernameController(req, res){
+    const user_id = req.user.user_id;
+    const target_username = req.params.target_username;
+
+    try{
+        const response = await VibeCheckService.getVibeChecksByUsername(user_id, target_username);
+        return res.status(response.httpStatus).json({
+            status: response.status,
+            ...(response.data && { data: response.data })
+        });
+    }catch(error){
+        res.status(401).json({message: error.message});
+    }
+
+}
 
 module.exports = {createVibeCheckController, 
                   getVibeCheckByIdController,
                   getAllVibeChecksController, 
                   deleteVibeCheckController,
                   likeOrDislikeController,
-                  getVibeChecksByUserIdController
+                  getVibeChecksByUserIdController,
+                  getVibeChecksByUsernameController
                 }
 
 

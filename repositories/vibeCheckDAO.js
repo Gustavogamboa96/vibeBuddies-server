@@ -217,6 +217,22 @@ async function getItemsByUserId(user_id) {
         console.error("Error getting all items for user from DynamoDB:", error);
     }
 }
+async function getItemsByUsername(username) {
+    const command = new QueryCommand({
+        TableName,
+        IndexName: "username-index",
+        KeyConditionExpression: "username = :username", // Query based on user_id
+        ExpressionAttributeValues: {
+            ":username": username,           // Replace with the user_id value
+        },
+    });
+    try {
+        const data = await documentClient.send(command);
+        return data;
+    } catch (error) {
+        console.error("Error getting all items for user from DynamoDB:", error);
+    }
+}
 
 async function batchDeleteVibeChecks(vibe_checks_to_delete) {
     const MAX_BATCH_SIZE = 25;
@@ -261,4 +277,6 @@ module.exports = {getItemById,
                 addItemDislikedBy, 
                 removeItemDislikedBy,
                 getItemsByUserId,
-                batchDeleteVibeChecks};
+                getItemsByUsername,
+                batchDeleteVibeChecks,
+            };
