@@ -19,7 +19,7 @@ router.patch("", authenticateToken, updateFriendRequest);
 // by default its accepted
 router.get("", authenticateToken, retrieveAllFriends)
 // route to delete friends
-router.delete("", authenticateToken, deleteFriends)
+router.delete("/:username", authenticateToken, deleteFriends)
 // route to get friends of a user by their username, expected in the route param
 router.get("/:username", authenticateToken, retrieveFriendsByUsername);
 
