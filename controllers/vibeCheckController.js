@@ -106,7 +106,7 @@ async function getVibeChecksByUserIdController(req, res){
     }
 
 }
-//TODO
+
 async function getVibeChecksByUsernameController(req, res){
     const user_id = req.user.user_id;
     const target_username = req.params.target_username;
