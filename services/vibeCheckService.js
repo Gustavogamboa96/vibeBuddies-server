@@ -40,6 +40,7 @@ async function createVibeCheck(user_id, username, album_id, review, rating) {
         album_id,
         review,
         rating,
+        comments: [],
         likes: 0,
         dislikes: 0,
         disliked_by: [],
