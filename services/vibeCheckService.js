@@ -182,7 +182,10 @@ async function likeOrDislike(user_id, username, vibe_check_id, type) {
                 updatedArray = vibeCheck.data.returnedVibeCheck.disliked_by.filter(id => id !== username);
             }
             
-            //for likes
+            /*
+            adding increment or decrement on likes 
+            adding username to the liked_by array if value=1 and removing username from list otherwise
+            */
             if (type.trim() == "like") {
                 let updatedLikedBy = null;
                 const updatedVibeCheck = await dao.updateItemLikes(vibe_check_id, likeValue);
@@ -200,8 +203,11 @@ async function likeOrDislike(user_id, username, vibe_check_id, type) {
                 data.updatedLikedBy = updatedLikedBy.Attributes;
                 return dataResponse(200, "success", data)
             }
-            //for dislikes
-            if (type.trim() == "dislike") {
+            /*
+            adding increment or decrement on dislikes 
+            adding username to the disliked_by array if value=1 and removing username from list otherwise
+            */
+             if (type.trim() == "dislike") {
                 let updatedDislikedBy = null;
                 const updatedVibeCheck = await dao.updateItemDislikes(vibe_check_id, dislikeValue);
                 if(dislikeValue == 1){
