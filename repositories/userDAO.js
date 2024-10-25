@@ -168,6 +168,40 @@ async function findUserByEmail(userEmail) {
 
 // getAllUsernames
 
+//updatePassword
+async function updatePassword(username, newPassword) {
+  /**
+   * function to udpate password for given user by their username
+   *
+   * username - required data
+   * newPassword - required data
+   */
+
+  // // params for db function call
+  const params = {
+    TableName: USERS_TABLE,
+    Key: {
+      username: username,
+    },
+    UpdateExpression: 'SET #pwd = :newPassword',
+    ExpressionAttributeNames: {
+      '#pwd': 'password'
+    },
+    ExpressionAttributeValues: {
+      ':newPassword': newPassword
+    },
+    ReturnValues: "ALL_NEW",
+  }
+
+  try{
+  // db funciton call
+  const response = await documentClient.send(new UpdateCommand(params));
+  return response;  
+  }catch(error){
+    console.error('Error updating password:', error.message);
+    throw new Error('Could not update the password');
+  }
+}
 
 module.exports = {
   getUserByUsername,
@@ -176,4 +210,5 @@ module.exports = {
   findUserById,
   findUserByEmail,
   deleteUserById,
+  updatePassword,
 }
