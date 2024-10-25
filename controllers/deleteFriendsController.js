@@ -6,7 +6,7 @@ async function deleteFriends(req, res) {
     try {
 
         const { user_id: userId, username } = req.user;
-        const { username: targetUsername } = req.body
+        const { username: targetUsername } = req.params
 
         const response = await deleteFriend(userId, username, targetUsername);
 
