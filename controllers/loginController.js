@@ -24,12 +24,12 @@ async function loginController(req, res) {
         });
     } catch (error) {
         console.log(error.message);
-        const response = errorResponse(500, "Internal server error during loggin");
+        const response = errorResponse(500, `Internal server error during loggin: \n${error.message}`);
         res.status(response.httpStatus).json({
             message: response.message
         });
     }
 }
-
+//hello
 
 module.exports = { loginController };
