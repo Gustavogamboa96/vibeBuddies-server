@@ -13,7 +13,7 @@ async function getFriendsByUsername(username, status = "accepted") {
         const data = {}
 
         if (!username || typeof username !== "string") {
-            data.message = `invalid -username of type string is required`;
+            data.message = `invalid - username of type string is required`;
             return dataResponse(400, "fail", data);
         }
 
