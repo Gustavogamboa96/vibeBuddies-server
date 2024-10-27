@@ -1,5 +1,6 @@
 const express = require("express")
 const router = express.Router()
+const multer = require("multer");
 
 // controller layer functions
 const { updateProfile } = require("../controllers/updateProfileController");
@@ -7,7 +8,10 @@ const { deleteAccount } = require("../controllers/deleteAccountController");
 const { getUserByUsername } = require("../controllers/getUserByUsernameController");
 const { getPersonalInformation } = require("../controllers/getPersonalInformationController")
 const { updatePasswordController } = require("../controllers/updatePasswordController");
+const { uploadImageController } = require("../controllers/uploadImageController")
 
+// instance of multer
+const upload = multer({ storage: multer.memoryStorage() });
 
 // middleware
 const { dataValidation } = require("../middleware/updateProfileDataValidation");
@@ -23,6 +27,8 @@ router.delete("", authenticateToken, deleteAccount);
 router.get("/profile", authenticateToken, getPersonalInformation)
 // route to get a user by their username
 router.get("/:username", authenticateToken, getUserByUsername);
+// route to handle the user updating their profile image
+router.patch("/uploadImage", authenticateToken, upload.single("profileImage"), uploadImageController);
 
 
 

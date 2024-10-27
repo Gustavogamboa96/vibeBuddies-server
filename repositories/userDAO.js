@@ -193,16 +193,33 @@ async function updatePassword(username, newPassword) {
     ReturnValues: "ALL_NEW",
   }
 
-  try{
-  // db funciton call
-  const response = await documentClient.send(new UpdateCommand(params));
-  return response;  
-  }catch(error){
+  try {
+    // db funciton call
+    const response = await documentClient.send(new UpdateCommand(params));
+    return response;
+  } catch (error) {
     console.error('Error updating password:', error.message);
     throw new Error('Could not update the password');
   }
 }
 
+async function updateProfileImage(username, profileImageUrl) {
+  /**
+   * DAO function to handle updating the profileImageUrl attribute with the url of the bucket object
+   */
+  const params = {
+    TableName: USERS_TABLE,
+    Key: { username },
+    UpdateExpression: "SET #profileImageUrl = :profileImageUrl",
+    ExpressionAttributeNames: { "#profileImageUrl": "profileImageUrl" },
+    ExpressionAttributeValues: { ":profileImageUrl": profileImageUrl },
+    ReturnValues: "ALL_NEW"
+  };
+
+  return await documentClient.send(new UpdateCommand(params));
+}
+
+module.exports = { updateProfileImage };
 module.exports = {
   getUserByUsername,
   createUser,
@@ -211,4 +228,5 @@ module.exports = {
   findUserByEmail,
   deleteUserById,
   updatePassword,
+  updateProfileImage
 }
