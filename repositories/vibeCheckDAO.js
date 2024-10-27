@@ -41,9 +41,15 @@ async function addCommentToVibeCheck(vibeCheckId, newComment) {
 
   try {
     const result = await documentClient.send(command)
+    if (!result || !result.Attributes) {
+      console.error("addCommentToVibeCheck: No attributes returned")
+      return null
+    }
     console.log("Updated comments:", result.Attributes.comments)
+    return result.Attributes.comments
   } catch (error) {
-    console.error("Error adding comment:", error)
+    console.error("Error in addCommentToVibeCheck:", error)
+    throw error
   }
 }
 
