@@ -73,56 +73,38 @@ async function createVibeCheck(user_id, username, album_id, review, rating) {
 }
 
 async function createComment(user_id, username, vibe_check_id, comment_body) {
-  const data = {}
   try {
+    const data = {}
     const returnedVibeCheck = await dao.getItemById(vibe_check_id)
     const returnedUser = await userDao.findUserById(user_id)
 
-    if (returnedVibeCheck < 1) {
-      data.message = "vibeCheck does not exist"
-      return dataResponse(400, "fail", data)
-    } else if (returnedUser < 1) {
-      data.message = "user does not exist"
-      return dataResponse(400, "fail", data)
+    if (!returnedVibeCheck) {
+      data.message = "VibeCheck does not exist"
+      return dataResponse(404, "fail", data)
+    } else if (!returnedUser) {
+      data.message = "User does not exist"
+      return dataResponse(404, "fail", data)
     } else {
-      try {
-        const comment_id = uuid.v4()
-        const timestamp = Date.now()
-        const comment = {
-          comment_id,
-          user_id,
-          username,
-          comment_body,
-          timestamp,
-        }
-        const newComment = await dao.addCommentToVibeCheck(
-          vibe_check_id,
-          comment
-        )
+      const comment_id = uuid.v4()
+      const timestamp = Date.now()
+      const comment = {
+        comment_id,
+        user_id,
+        username,
+        comment_body,
+        timestamp,
+      }
+      const newComment = await dao.addCommentToVibeCheck(vibe_check_id, comment)
 
-        if (newComment) {
-          data.message = "comment created successfully"
-          return dataResponse(201, "success", data)
-        }
-      } catch (err) {
-        console.log(
-          "failed to call function addCommentToVibeCheck in service layer: ",
-          err
-        )
-
-        data.message = "failed to call"
-        return dataResponse(
-          500,
-          "failed to call function addCommentToVibeCheck in service layer",
-          data
-        )
+      if (newComment) {
+        data.message = "Comment created successfully"
+        return dataResponse(201, "success", data)
       }
     }
   } catch (err) {
-    console.error("Service layer error:", err)
-    data.message =
-      "failed to call functions getItemById or findUserById in service layer"
-    return dataResponse(500, "fail", data)
+    return dataResponse(500, "fail", {
+      message: "failed to confirm vibeChecks existence",
+    })
   }
 }
 
