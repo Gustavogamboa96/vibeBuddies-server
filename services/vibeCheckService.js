@@ -103,7 +103,9 @@ async function createComment(user_id, username, vibe_check_id, comment_body) {
     }
   } catch (err) {
     console.error("Error in createComment:", err)
-    return dataResponse(500, "fail", { message: "Internal server error" })
+    return dataResponse(500, "fail", {
+      message: "failed to confirm vibeChecks existence",
+    })
   }
 }
 
