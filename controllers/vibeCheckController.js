@@ -37,12 +37,15 @@ async function createCommentController(req, res) {
       vibe_check_id,
       comment_body
     )
-    res.status(response.httpStatus).json({
+    return res.status(response.httpStatus).json({
       status: response.status,
       ...(response.data && { data: response.data }),
     })
   } catch (err) {
-    res.status(401).json({ message: err.message })
+    console.error("Controller error:", err)
+    return res
+      .status(500)
+      .json({ status: "fail", message: "Unexpected server error" })
   }
 }
 
