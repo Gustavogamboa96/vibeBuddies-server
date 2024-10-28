@@ -17,7 +17,7 @@ async function uploadImageService(username, file) {
             Bucket: "vibebuddies-profileimages",
             Key: `profileImages/${username}-${Date.now()}`,
             Body: file.buffer,
-            ContentType: file.mimetype
+            // ContentType: file.mimetype
         };
 
         // sotring the image in the bucket
