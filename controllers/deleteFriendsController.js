@@ -2,9 +2,13 @@ const { deleteFriend } = require("../services/deleteFriendsService");
 const { errorResponse } = require("../utils/errorResponse");
 
 async function deleteFriends(req, res) {
+    /**
+     * controller layer function to handle deleting of friends
+     */
 
     try {
 
+        // destructuring required params
         const { user_id: userId, username } = req.user;
         const { username: targetUsername } = req.params
 

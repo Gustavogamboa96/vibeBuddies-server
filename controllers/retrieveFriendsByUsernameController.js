@@ -2,6 +2,10 @@ const { errorResponse } = require("../utils/errorResponse");
 const { getFriendsByUsername } = require("../services/retrieveFriendsByUsernameService");
 
 async function retrieveFriendsByUsername(req, res) {
+    /**
+     * controller layer function to hanlde the retrieving of a username
+     * 
+     */
     try {
         const { username } = req.params
 
