@@ -56,7 +56,7 @@ describe('updatePassword', () => {
 
         expect(result.httpStatus).toBe(401);
         expect(result.status).toBe('fail');
-        expect(result.data.message).toBe('Passwords do not match!');
+        expect(result.data.message).toBe('Password incorrect!');
     });
 
     it('should return 401 if the password update fails', async () => {
