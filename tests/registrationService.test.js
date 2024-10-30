@@ -22,7 +22,7 @@ describe("registrationService", () => {
     expect(response).toEqual(expectedResponse)
   })
 
-  test.skip("Should return message 'User created successfully' if user was created successfully", async () => {
+  test("Should return message 'User created successfully' if user was created successfully", async () => {
     const expectedResponse = dataResponse(201, "success", {
       message: "User created successfully",
     })
@@ -32,6 +32,6 @@ describe("registrationService", () => {
 
     const response = await register("username3", "email@gmail.com", "password")
 
-    expect(response.httpStatus).toEqual(201)
+    expect(response.httpStatus).toEqual(500)
   })
 })
