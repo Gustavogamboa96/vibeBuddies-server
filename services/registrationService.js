@@ -15,7 +15,6 @@ async function register(username, email, password) {
     // awaits getUserByUsername query
     const returnedUsername = await userDAO.getUserByUsername(username)
     const returnedUserEmail = await userDAO.findUserByEmail(email)
-    // console.log("service layah: ", returnedUserEmail)
 
     // checks results of query to see if username already exists
     if (returnedUsername && returnedUsername.Count > 0) {
@@ -45,7 +44,6 @@ async function register(username, email, password) {
           userId: userAccount.user_id,
         }
 
-        // console.log(data)
         data.message = "User created successfully"
         return dataResponse(201, "success", data)
       } catch (error) {
