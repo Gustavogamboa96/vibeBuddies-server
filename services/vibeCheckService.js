@@ -56,17 +56,14 @@ async function createVibeCheck(user_id, username, album_id, review, rating) {
       timestamp,
     }
     await dao.addItem(vibeCheck)
-    const newlyCreatedVibeCheck = await getVibeCheckById(
-      user_id,
-      vibe_check_id
-    )
+    const newlyCreatedVibeCheck = await getVibeCheckById(user_id, vibe_check_id)
 
     if (!newlyCreatedVibeCheck) {
       data.message = "New VibeCheck couldn't be retrieve possibly not created"
       return dataResponse(401, "fail", data)
     }
-    data.newlyCreatedVibeCheck = newlyCreatedVibeCheck.data.returnedVibeCheck;
-    return dataResponse(200, "success", data);
+    data.newlyCreatedVibeCheck = newlyCreatedVibeCheck.data.returnedVibeCheck
+    return dataResponse(200, "success", data)
   } catch (error) {
     logger.error(`Failed to create vibeCheck: ${error.message}`, {
       stack: error.stack,
@@ -75,9 +72,11 @@ async function createVibeCheck(user_id, username, album_id, review, rating) {
   }
 }
 
+// service layer function for creating a comment on a vibecheck
 async function createComment(user_id, username, vibe_check_id, comment_body) {
   try {
     const data = {}
+    //verifies that the user and vibecheck both exist
     const returnedVibeCheck = await dao.getItemById(vibe_check_id)
     const returnedUser = await userDao.findUserById(user_id)
 
@@ -88,6 +87,7 @@ async function createComment(user_id, username, vibe_check_id, comment_body) {
       data.message = "User does not exist"
       return dataResponse(404, "fail", data)
     } else {
+      //creates the comment object with a unique uuid and timestamp
       const comment_id = uuid.v4()
       const timestamp = Date.now()
       const comment = {
@@ -97,6 +97,7 @@ async function createComment(user_id, username, vibe_check_id, comment_body) {
         comment_body,
         timestamp,
       }
+      // uses dao function to insert the comment object into the database
       const newComment = await dao.addCommentToVibeCheck(vibe_check_id, comment)
 
       if (newComment) {
@@ -111,15 +112,18 @@ async function createComment(user_id, username, vibe_check_id, comment_body) {
   }
 }
 
+// service layer function for removing a comment
 async function removeComment(user_id, vibe_check_id, comment_id) {
   try {
     const data = {}
+    // verifies that the user exists
     const returnedUser = await userDao.findUserById(user_id)
     if (returnedUser < 1) {
       data.message = "user does not exist"
       return dataResponse(400, "fail", data)
     } else {
       try {
+        // attempts to use the dao function to delete the comment
         const deleteComment = await dao.deleteComment(
           vibe_check_id,
           comment_id,
@@ -154,7 +158,6 @@ async function getVibeCheckById(user_id, vibe_check_id) {
   try {
     const data = {}
     if (!user_id) {
-
       data.message = "No user_id was passed, might have to refresh session"
       return dataResponse(401, "fail", data)
     }
@@ -167,8 +170,8 @@ async function getVibeCheckById(user_id, vibe_check_id) {
       data.message = "Couldn't get vibeCheck"
       return dataResponse(401, "fail", data)
     }
-    data.returnedVibeCheck = returnedVibeCheck.Item;
-    return dataResponse(200, "success", data);
+    data.returnedVibeCheck = returnedVibeCheck.Item
+    return dataResponse(200, "success", data)
   } catch (error) {
     logger.error(`Failed to get vibeCheck by ID: ${error.message}`, {
       stack: error.stack,
@@ -336,7 +339,6 @@ async function likeOrDislike(user_id, username, vibe_check_id, type) {
       data.updatedDislikedBy = updatedDislikedBy.Attributes
       return dataResponse(200, "success", data)
     }
-
   } catch (error) {
     logger.error(
       `Failed to update vibeCheck's likes/dislikes: ${error.message}`,
