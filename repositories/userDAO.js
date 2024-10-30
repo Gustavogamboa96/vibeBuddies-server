@@ -166,8 +166,6 @@ async function findUserByEmail(userEmail) {
   }
 }
 
-// getAllUsernames
-
 //updatePassword
 async function updatePassword(username, newPassword) {
   /**

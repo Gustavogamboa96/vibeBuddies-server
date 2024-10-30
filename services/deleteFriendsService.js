@@ -4,7 +4,7 @@ const friendshipDAO = require("../repositories/friendshipDAO");
 
 async function deleteFriend(userId, username, targetUsername) {
     /**
-     * service layer function to handle the deletion of user friends link
+     * service layer function to handle the deletion of user friend
      * 
      * userId, username - valdiated by middleware
      * targetUsername - will be validated here

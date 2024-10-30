@@ -3,15 +3,17 @@ const friendShipDAO = require("../repositories/friendshipDAO");
 const userDAO = require("../repositories/userDAO");
 
 async function getFriendsByUsername(username, status = "accepted") {
+    /**
+     * service layer funciton to hanlde getting the friends of a user,
+     * 
+     * username - required
+     * status - by default accepted, but can be changed
+     */
+
     try {
-        // const data = {}
-        // console.log(username);
-        // data.message = "all good";
-        // return dataResponse(200, "success", data);
-
-
         const data = {}
 
+        // checking username validity
         if (!username || typeof username !== "string") {
             data.message = `invalid - username of type string is required`;
             return dataResponse(400, "fail", data);
@@ -19,11 +21,13 @@ async function getFriendsByUsername(username, status = "accepted") {
 
         const returnedUser = await userDAO.getUserByUsername(username);
 
+        // checking if user is not found
         if (returnedUser.Count === 0) {
             data.message = `user ${username} not found`;
             return dataResponse(404, "success", data);
         }
 
+        // getting needed information
         const { user_id: userId } = returnedUser.Items[0];
 
         // DAO layer function to get all friends by status

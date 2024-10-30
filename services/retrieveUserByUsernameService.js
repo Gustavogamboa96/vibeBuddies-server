@@ -20,7 +20,7 @@ async function retrieveUserByUsername(username) {
         // searching for the user and extracting sensitive informaiton
         const returnedUser = await userDAO.getUserByUsername(username);
 
-        // block checks if user is found found
+        // block checks if user is not found found
         if (returnedUser.Count === 0) {
             data.message = `invalid - user ${username} not found`;
             return dataResponse(404, 'fail', data);
