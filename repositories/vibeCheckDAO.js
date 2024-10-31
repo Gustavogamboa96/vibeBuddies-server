@@ -99,7 +99,7 @@ async function deleteComment(vibeCheckId, commentId, userId) {
   }
 }
 
-//get all vibechecks
+//get all vibechecks in db
 async function getAllItems() {
   const command = new ScanCommand({
     TableName,
@@ -112,7 +112,7 @@ async function getAllItems() {
     throw err
   }
 }
-//delete a single vibecheck
+//delete a single vibecheck by id
 async function deleteItem(vibe_check_id) {
   const command = new DeleteCommand({
     TableName,
@@ -130,7 +130,7 @@ async function deleteItem(vibe_check_id) {
     throw new Error(error.message)
   }
 }
-//add one like to the count
+//add one like to the count of specific vibecheck by id
 async function updateItemLikes(vibe_check_id, value) {
   const command = new UpdateCommand({
     TableName,
@@ -152,7 +152,7 @@ async function updateItemLikes(vibe_check_id, value) {
   }
 }
 
-//add username to the liked_by list
+//add username to the liked_by list of specific vibecheck by id
 async function addItemLikedBy(username, vibe_check_id) {
   const command = new UpdateCommand({
     TableName,
@@ -175,7 +175,7 @@ async function addItemLikedBy(username, vibe_check_id) {
   }
 }
 
-//remove username from liked_by list
+//remove username from liked_by list of specific vibecheck by id
 async function removeItemLikedBy(newArray, vibe_check_id) {
   const command = new UpdateCommand({
     TableName,
@@ -196,7 +196,7 @@ async function removeItemLikedBy(newArray, vibe_check_id) {
   }
 }
 
-//add 1 dislike to count
+//add 1 dislike to count of specific vibecheck by id
 async function updateItemDislikes(vibe_check_id, value) {
   const command = new UpdateCommand({
     TableName,
@@ -218,11 +218,11 @@ async function updateItemDislikes(vibe_check_id, value) {
   }
 }
 
-//adds username to disliked_by list
+//adds username to disliked_by list of specific vibecheck by id
 async function addItemDislikedBy(username, vibe_check_id) {
   const command = new UpdateCommand({
     TableName,
-    Key: { vibe_check_id: vibe_check_id }, // Replace with your primary key
+    Key: { vibe_check_id: vibe_check_id }, 
     UpdateExpression:
       "SET disliked_by = list_append(if_not_exists(disliked_by, :empty_list), :username)",
     ExpressionAttributeValues: {
@@ -241,12 +241,12 @@ async function addItemDislikedBy(username, vibe_check_id) {
   }
 }
 
-//removes username from disliked_by list
+//removes username from disliked_by list of specific vibecheck by id
 async function removeItemDislikedBy(newArray, vibe_check_id) {
   const command = new UpdateCommand({
     TableName,
-    Key: { vibe_check_id: vibe_check_id }, // Replace with your primary key
-    UpdateExpression: "SET disliked_by = :newarray", // remove user who liked
+    Key: { vibe_check_id: vibe_check_id }, 
+    UpdateExpression: "SET disliked_by = :newarray", // remove user who disliked
     ExpressionAttributeValues: {
       ":newarray": newArray,
     },
@@ -316,7 +316,7 @@ async function getItemsByUsername(username) {
   }
 }
 
-//delete all vibechecks, used to perform by user_id in service
+//delete all vibechecks, used to perform deleteUser by user_id in service
 async function batchDeleteVibeChecks(vibe_checks_to_delete) {
   const MAX_BATCH_SIZE = 25
 
@@ -327,20 +327,19 @@ async function batchDeleteVibeChecks(vibe_checks_to_delete) {
     const deleteRequests = chunk.map((item) => ({
       DeleteRequest: {
         Key: {
-          vibe_check_id: item.vibe_check_id, // Replace with the actual partition key
+          vibe_check_id: item.vibe_check_id, 
         },
       },
     }))
 
     const command = new BatchWriteCommand({
       RequestItems: {
-        vibe_checks_table: deleteRequests, // Replace with your table name
+        vibe_checks_table: deleteRequests, 
       },
     })
 
     try {
       const data = await documentClient.send(command)
-      //console.log('Batch delete successful:', data);
       return data
     } catch (error) {
       console.error("Error performing batch delete:", error)

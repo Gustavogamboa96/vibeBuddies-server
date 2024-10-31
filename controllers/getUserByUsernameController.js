@@ -3,7 +3,7 @@ const { retrieveUserByUsername } = require("../services/retrieveUserByUsernameSe
 
 async function getUserByUsername(req, res) {
     /**
-     * controller layer function to handle getting a users information
+     * controller layer function to handle getting a users information by their username
      */
 
     try {

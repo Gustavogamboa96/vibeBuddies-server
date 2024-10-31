@@ -13,7 +13,6 @@ async function uploadImageService(username, file) {
     try {
         const s3Params = {
             // chose to hard code the bucket name since it only stores user images, in a bigger project would store in .env
-            // Bucket: process.env.AWS_BUCKET_NAME,
             Bucket: "vibebuddies-profileimages",
             Key: `profileImages/${username}-${Date.now()}`,
             Body: file.buffer,
@@ -23,7 +22,7 @@ async function uploadImageService(username, file) {
         // sotring the image in the bucket
         const s3Upload = await s3.upload(s3Params).promise();
         const profileImageUrl = s3Upload.Location;
-        // storing the profileImage in the URL
+        // storing the profileImage in the URL attribute of the user
         await userDAO.updateProfileImage(username, profileImageUrl);
 
         return dataResponse(200, "success", { profileImageUrl });

@@ -1,5 +1,3 @@
-const express = require("express")
-const router = express.Router()
 const VibeCheckService = require("../services/vibeCheckService")
 
 //post
@@ -26,6 +24,7 @@ async function createVibeCheckController(req, res) {
 }
 
 //patch
+// controller function for creating a comment
 async function createCommentController(req, res) {
   const { user_id, username } = req.user
   const { comment_body, vibe_check_id } = req.body
@@ -50,6 +49,7 @@ async function createCommentController(req, res) {
 }
 
 //delete
+// controller function for deleting a comment
 async function deleteCommentController(req, res) {
   const { user_id } = req.user
   const { vibe_check_id, comment_id } = req.body
